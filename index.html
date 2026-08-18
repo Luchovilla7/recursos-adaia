@@ -109,6 +109,15 @@
         .msg.ok { color: #0a8f4c; }
         html[data-theme="dark"] .msg.error { color: #ff6b6b; }
         html[data-theme="dark"] .msg.ok { color: #7bd88f; }
+
+        .auth-notice {
+            display: flex; align-items: flex-start; gap: 0.7rem;
+            background: var(--accent-glow); border: 2px solid var(--border-color);
+            border-radius: 10px; padding: 0.9rem 1rem; margin-bottom: 1.4rem;
+            font-size: 0.85rem; font-weight: 600; color: var(--text-color); line-height: 1.4;
+        }
+        .auth-notice i { color: #b38f00; margin-top: 0.15rem; flex-shrink: 0; }
+        html[data-theme="dark"] .auth-notice i { color: var(--accent-color); }
     </style>
 </head>
 
@@ -122,7 +131,11 @@
     <form class="card" id="loginForm">
         <span class="brand-badge">VAULT</span>
         <h1>Acceso al contenido</h1>
-        <p class="sub">Ingresá el correo con el que estás registrado en el portal de cliente para entrar.</p>
+        <p class="sub">Ingresá el correo con el que estás registrado en ADAIA para entrar.</p>
+        <div class="auth-notice" id="auth-notice" style="display:none;">
+            <i class="fas fa-circle-info"></i>
+            <span>Necesitás ingresar el correo electrónico con el que adquiriste ADAIA para poder acceder a los recursos.</span>
+        </div>
         <label class="field-label" for="email">Correo electrónico</label>
         <input type="email" id="email" name="email" required autocomplete="email" placeholder="tu@email.com">
         <button type="submit" id="submitBtn">Entrar</button>
@@ -150,6 +163,10 @@
         const btn = document.getElementById('submitBtn');
         const params = new URLSearchParams(window.location.search);
         const next = params.get('next') || '/recursos.html';
+
+        if (params.get('reason') === 'auth') {
+            document.getElementById('auth-notice').style.display = 'flex';
+        }
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();

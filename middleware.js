@@ -23,5 +23,6 @@ export default async function middleware(request) {
   const url = new URL(request.url);
   const loginUrl = new URL('/', url);
   loginUrl.searchParams.set('next', url.pathname);
+  loginUrl.searchParams.set('reason', 'auth');
   return Response.redirect(loginUrl, 302);
 }
