@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contenido para Redes con IA Generativa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: #ffffff;
+            --panel-bg: #f5f5f5;
+            --text-color: #000000;
+            --text-muted: #555555;
+            --accent-color: #ffea00;
+            --accent-glow: rgba(255, 234, 0, 0.4);
+            --border-color: #000000;
+            --input-bg: #ffffff;
+            --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        html[data-theme="dark"] {
+            --bg-color: #0d0d0d;
+            --card-bg: #161616;
+            --panel-bg: #1e1e1e;
+            --text-color: #f2f2f2;
+            --text-muted: #a3a3a3;
+            --accent-color: #ffea00;
+            --accent-glow: rgba(255, 234, 0, 0.22);
+            --border-color: #f2f2f2;
+            --input-bg: #101010;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3, .step-label {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 2rem; }
+
+        /* Top bar */
+        .topbar {
+            border-bottom: 3px solid var(--border-color);
+            background: var(--card-bg);
+            position: sticky; top: 0; z-index: 50;
+            transition: var(--transition);
+        }
+        .topbar-inner {
+            max-width: 1000px; margin: 0 auto; padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .brand {
+            display: flex; align-items: center; gap: 0.7rem;
+            font-family: 'Oswald', sans-serif; font-weight: 700; letter-spacing: 1px;
+        }
+        .brand-badge {
+            background: var(--accent-color); color: #000; border: 3px solid var(--border-color);
+            box-shadow: 3px 3px 0px var(--border-color);
+            padding: 0.15rem 0.7rem; font-size: 0.75rem; border-radius: 6px;
+        }
+
+        .theme-toggle {
+            display: flex; align-items: center; gap: 0.6rem;
+            background: var(--card-bg); color: var(--text-color);
+            border: 3px solid var(--border-color); border-radius: 999px;
+            padding: 0.4rem 0.9rem; cursor: pointer;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.8rem;
+            box-shadow: 3px 3px 0px var(--border-color);
+            transition: var(--transition);
+        }
+        .theme-toggle:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-color); }
+        .theme-toggle:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0px var(--border-color); }
+
+        /* Header */
+        header.hero { padding: 3.5rem 0 2.5rem; text-align: center; }
+        .eyebrow {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            font-size: 0.75rem; letter-spacing: 2px; color: var(--text-muted);
+            font-weight: 700; text-transform: uppercase; margin-bottom: 1.2rem;
+        }
+        .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-color); border: 2px solid var(--border-color); }
+        header.hero h1 {
+            font-size: 2.6rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.15;
+        }
+        header.hero h1 .hl {
+            background: var(--accent-color); color: #000; padding: 0.05em 0.35em;
+            box-shadow: 4px 4px 0px var(--border-color); border: 3px solid var(--border-color);
+            display: inline-block;
+        }
+        header.hero p { max-width: 620px; margin: 0 auto; color: var(--text-muted); font-size: 1.05rem; font-weight: 600; }
+
+        .step-nav {
+            display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-top: 2rem;
+        }
+        .step-nav a {
+            display: flex; align-items: center; gap: 0.5rem; text-decoration: none;
+            font-family: 'Oswald', sans-serif; font-size: 0.85rem; letter-spacing: 0.5px;
+            color: var(--text-color); background: var(--card-bg);
+            border: 2px solid var(--border-color); border-radius: 999px; padding: 0.4rem 1rem;
+            box-shadow: 3px 3px 0px var(--border-color); transition: var(--transition);
+        }
+        .step-nav a:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-color); }
+        .step-nav .num {
+            width: 22px; height: 22px; border-radius: 50%; background: var(--accent-color);
+            border: 2px solid var(--border-color); display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: 800; color: #000;
+        }
+
+        main { padding: 1rem 0 5rem; display: flex; flex-direction: column; gap: 2.5rem; }
+
+        /* Section card */
+        section.card {
+            background: var(--card-bg); border: 3px solid var(--border-color); border-radius: 16px;
+            box-shadow: 6px 6px 0px var(--border-color); padding: 2rem;
+            transition: var(--transition);
+        }
+        .card-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
+        .card-title-row { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.4rem; }
+        .step-badge {
+            width: 34px; height: 34px; flex-shrink: 0; border-radius: 10px;
+            background: var(--accent-color); border: 3px solid var(--border-color);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Oswald', sans-serif; font-weight: 800; font-size: 0.85rem; color: #000;
+        }
+        section.card h2 { font-size: 1.5rem; font-weight: 700; }
+        .card-sub { color: var(--text-muted); font-size: 0.92rem; font-weight: 600; margin-left: 3rem; }
+
+        .copy-btn {
+            flex-shrink: 0; display: flex; align-items: center; gap: 0.5rem;
+            background: var(--card-bg); color: var(--text-color); border: 3px solid var(--border-color);
+            border-radius: 10px; padding: 0.6rem 1.1rem; font-family: 'Montserrat', sans-serif;
+            font-weight: 700; font-size: 0.85rem; cursor: pointer;
+            box-shadow: 3px 3px 0px var(--border-color); transition: var(--transition);
+        }
+        .copy-btn:hover { background: var(--accent-color); transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-color); }
+        .copy-btn:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0px var(--border-color); }
+        .copy-btn.copied { background: var(--accent-color); }
+
+        .field-block { margin-left: 3rem; }
+        label.field-label {
+            font-family: 'Oswald', sans-serif; font-size: 0.72rem; letter-spacing: 1px;
+            text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 0.4rem;
+        }
+        .field-input, .field-select, .field-textarea {
+            width: 100%; background: var(--input-bg); color: var(--text-color);
+            border: 2px solid var(--border-color); border-radius: 8px; padding: 0.7rem 0.9rem;
+            font-family: 'Montserrat', sans-serif; font-size: 0.88rem; font-weight: 600;
+            outline: none; transition: var(--transition);
+        }
+        .field-input:focus, .field-select:focus, .field-textarea:focus {
+            box-shadow: 3px 3px 0px var(--border-color); transform: translate(-1px, -1px);
+        }
+        select.field-select { cursor: pointer; }
+        textarea.field-textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+        .editable-zone {
+            background: var(--panel-bg); border: 2px dashed var(--border-color); border-radius: 10px;
+            padding: 0.9rem 1.1rem; color: var(--text-color); font-family: 'Montserrat', sans-serif;
+            font-size: 0.88rem; font-weight: 600; line-height: 1.7; width: 100%; resize: vertical;
+            outline: none; min-height: 90px; transition: var(--transition);
+        }
+        .editable-zone:focus { box-shadow: 3px 3px 0px var(--border-color); }
+        .editable-zone::placeholder { color: var(--text-muted); opacity: 0.7; }
+
+        .output-box {
+            background: var(--panel-bg); border: 2px solid var(--border-color); border-radius: 10px;
+            padding: 1.1rem 1.3rem; font-family: 'Montserrat', sans-serif; font-size: 0.87rem;
+            color: var(--text-color); line-height: 1.8; white-space: pre-wrap; word-break: break-word;
+            min-height: 80px; font-weight: 500;
+        }
+
+        .pulse-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; }
+        .pulse-dot {
+            width: 9px; height: 9px; border-radius: 50%; background: var(--accent-color);
+            border: 2px solid var(--border-color); animation: pulse 2s infinite; flex-shrink: 0;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.75); } }
+        .pulse-label { font-family: 'Oswald', sans-serif; font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); }
+
+        .micro-note { color: var(--text-muted); font-size: 0.85rem; font-weight: 600; margin: 0.8rem 0 1rem; }
+        .micro-note code {
+            background: var(--accent-color); color: #000; padding: 0.1rem 0.4rem; border-radius: 4px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.8rem;
+        }
+
+        .micro-bank { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+        .micro-chip {
+            background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 999px;
+            padding: 0.4rem 0.9rem; color: var(--text-color); font-family: 'Montserrat', sans-serif;
+            font-size: 0.78rem; font-weight: 700; cursor: pointer; white-space: nowrap;
+            box-shadow: 2px 2px 0px var(--border-color); transition: var(--transition);
+        }
+        .micro-chip:hover { background: var(--accent-color); transform: translate(-2px, -2px); box-shadow: 4px 4px 0px var(--border-color); }
+        .micro-chip.copied { background: var(--accent-color); }
+
+        footer.page-footer {
+            border-top: 3px solid var(--border-color); padding: 2rem 0; text-align: center;
+            color: var(--text-muted); font-size: 0.85rem; font-weight: 600;
+        }
+
+        #toast {
+            position: fixed; bottom: 1.5rem; right: 1.5rem; transform: translateY(120%); opacity: 0;
+            background: var(--accent-color); color: #000; font-weight: 800; padding: 0.8rem 1.4rem;
+            border: 3px solid var(--border-color); border-radius: 10px;
+            box-shadow: 5px 5px 0px var(--border-color); transition: all 0.3s ease; z-index: 100;
+            display: flex; align-items: center; gap: 0.6rem; font-family: 'Montserrat', sans-serif;
+        }
+        #toast.show { transform: translateY(0); opacity: 1; }
+
+        @media (max-width: 700px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            .card-sub, .field-block { margin-left: 0; }
+            header.hero h1 { font-size: 2rem; }
+            section.card { padding: 1.4rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">
+                <span class="brand-badge">CONTENIDO ÁGIL</span>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
+                <i class="fas fa-moon" id="theme-icon"></i>
+                <span id="theme-text">Oscuro</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header class="hero">
+            <div class="eyebrow"><span class="dot"></span> Metodología ágil</div>
+            <h1>Contenido para Redes con <span class="hl">IA Generativa</span></h1>
+            <p>Un solo panel de configuración alimenta los 3 prompts: imagen, guion y video. Máxima consistencia, mínima fricción.</p>
+
+            <nav class="step-nav">
+                <a href="#config"><span class="num">00</span> Config base</a>
+                <a href="#prompt-imagen"><span class="num">01</span> Imagen</a>
+                <a href="#prompt-guion"><span class="num">02</span> Guion</a>
+                <a href="#prompt-video"><span class="num">03</span> Video</a>
+            </nav>
+        </header>
+
+        <main>
+
+            <!-- 00 CONFIG -->
+            <section class="card" id="config">
+                <div class="card-title-row">
+                    <div class="step-badge">00</div>
+                    <h2>Configuración Base</h2>
+                </div>
+                <p class="card-sub">Definilo una sola vez. Se reutiliza automáticamente en los 3 prompts para que todo sea 100% consistente.</p>
+
+                <div class="field-block" style="margin-top:1.5rem;">
+                    <div class="grid-2" style="grid-template-columns: 1fr;">
+                        <div>
+                            <label class="field-label">Personaje / producto / escena (descripción fija)</label>
+                            <textarea id="cfg-personaje" class="field-textarea" rows="3" oninput="updateAll()" placeholder="Ej: mujer de unos 27 años, cabello oscuro recogido en un rodete, buzo gris, sentada en el auto, sosteniendo una lata de agua tónica negra y dorada">Mujer de unos 27 años, cabello castaño oscuro recogido en un rodete bajo, buzo gris oversize, sentada en el asiento del conductor de un auto, sosteniendo una lata negra y dorada de agua tónica premium.</textarea>
+                        </div>
+                    </div>
+
+                    <div class="grid-2" style="margin-top:1.2rem;">
+                        <div>
+                            <label class="field-label">Tipo de contenido</label>
+                            <select id="cfg-tipo" class="field-select" onchange="updateAll()">
+                                <option value="selfie testimonial hablando directo a cámara">Selfie testimonial (habla a cámara)</option>
+                                <option value="unboxing / muestra de producto en primer plano">Unboxing / muestra de producto</option>
+                                <option value="review o recomendación casual">Review / recomendación</option>
+                                <option value="tutorial paso a paso">Tutorial paso a paso</option>
+                                <option value="skit humorístico o situación cotidiana">Skit humorístico / situación cotidiana</option>
+                                <option value="lifestyle / día en la vida">Lifestyle / día en la vida</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="field-label">Formato / plataforma</label>
+                            <select id="cfg-formato" class="field-select" onchange="updateAll()">
+                                <option value="9:16 vertical">9:16 vertical (TikTok / Reels / Shorts)</option>
+                                <option value="1:1 cuadrado">1:1 cuadrado (Feed)</option>
+                                <option value="4:5 vertical">4:5 vertical (Feed Instagram)</option>
+                                <option value="16:9 horizontal">16:9 horizontal (YouTube)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="field-label">Idioma y acento</label>
+                            <select id="cfg-acento" class="field-select" onchange="updateAll()">
+                                <option value="ar_rio">Español rioplatense (Argentina / Uruguay)</option>
+                                <option value="co_paisa">Español colombiano paisa (Medellín)</option>
+                                <option value="mx_neutro">Español mexicano (CDMX, neutro)</option>
+                                <option value="es_madrid">Español peninsular (Madrid)</option>
+                                <option value="cl_santiago">Español chileno (Santiago)</option>
+                                <option value="pe_lima">Español peruano (Lima)</option>
+                                <option value="ve_caracas">Español venezolano (Caracas)</option>
+                                <option value="us_en">Inglés americano (US, neutro)</option>
+                                <option value="uk_en">Inglés británico (Londres / RP)</option>
+                                <option value="br_pt">Portugués brasileño (carioca)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="field-label">Movimiento de cámara</label>
+                            <select id="cfg-camara" class="field-select" onchange="updateAll()">
+                                <option value="selfie_pulso">Selfie a pulso (temblor natural de mano)</option>
+                                <option value="selfie_gimbal">Selfie con leve estabilización</option>
+                                <option value="tripode_fijo">Trípode fijo (encuadre estático)</option>
+                                <option value="tercero_mano">Grabada por otra persona, en mano</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="field-label">Nivel de micromovimientos del personaje</label>
+                            <select id="cfg-micro" class="field-select" onchange="updateAll()">
+                                <option value="sutil">Sutil (parpadeo, respiración, mirada)</option>
+                                <option value="natural" selected>Natural (+ gestos leves, postura)</option>
+                                <option value="expresivo">Expresivo (+ gestos amplios, energía alta)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 01 IMAGEN -->
+            <section class="card" id="prompt-imagen">
+                <div class="card-head">
+                    <div>
+                        <div class="card-title-row">
+                            <div class="step-badge">01</div>
+                            <h2>Prompt de Imagen Base</h2>
+                        </div>
+                        <p class="card-sub">Se arma solo con la config de arriba · look hiperrealista de celular, sin retoque</p>
+                    </div>
+                    <button class="copy-btn" onclick="copyOutput('output-imagen', this)">
+                        <i class="fas fa-copy"></i> <span>Copiar</span>
+                    </button>
+                </div>
+                <div class="field-block output-box" id="output-imagen"></div>
+            </section>
+
+            <!-- 02 GUION -->
+            <section class="card" id="prompt-guion">
+                <div class="card-head">
+                    <div>
+                        <div class="card-title-row">
+                            <div class="step-badge">02</div>
+                            <h2>Prompt de Guion</h2>
+                        </div>
+                        <p class="card-sub">Para pedirle el guion a ChatGPT o Claude, ya con el acento y tono correctos</p>
+                    </div>
+                    <button class="copy-btn" onclick="copyOutput('output-guion', this)">
+                        <i class="fas fa-copy"></i> <span>Copiar</span>
+                    </button>
+                </div>
+
+                <div class="field-block">
+                    <div class="grid-2">
+                        <div>
+                            <label class="field-label">Tema / mensaje clave</label>
+                            <input id="cfg-tema" class="field-input" oninput="updateAll()" placeholder="Ej: la marca X, su beneficio principal..." value="Verona, agua tónica premium: sabor más dulce y agradable, burbujas más intensas">
+                        </div>
+                        <div>
+                            <label class="field-label">Duración (segundos)</label>
+                            <input id="cfg-duracion" type="number" class="field-input" oninput="updateAll()" value="20" min="5" max="90">
+                        </div>
+                    </div>
+                    <div style="margin-top:1.2rem;">
+                        <label class="field-label">Tono</label>
+                        <select id="cfg-tono" class="field-select" onchange="updateAll()">
+                            <option value="natural y casual, nada formal">Natural y casual</option>
+                            <option value="entusiasta y enérgico">Entusiasta y enérgico</option>
+                            <option value="cercano y confidente, como contándole a una amiga">Cercano / confidente</option>
+                            <option value="informativo pero relajado">Informativo relajado</option>
+                            <option value="con humor y espontaneidad">Con humor</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field-block output-box" id="output-guion" style="margin-top:1.5rem;"></div>
+            </section>
+
+            <!-- 03 VIDEO -->
+            <section class="card" id="prompt-video">
+                <div class="card-title-row">
+                    <div class="step-badge">03</div>
+                    <h2>Prompt de Video Final</h2>
+                </div>
+                <p class="card-sub">Pegá el guion del paso 02 · combina cámara, micromovimientos, acento y consistencia total</p>
+
+                <div class="field-block" style="margin-top:1.5rem;">
+                    <div class="pulse-row">
+                        <div class="pulse-dot"></div>
+                        <span class="pulse-label">Campo dinámico — pegá tu guion generado</span>
+                    </div>
+                    <textarea id="script-input" class="editable-zone" placeholder="Pegá acá el guion generado en el paso 02..." oninput="updateAll()"></textarea>
+
+                    <div style="margin-top:1.5rem;">
+                        <div class="card-head" style="margin-bottom:0.8rem;">
+                            <span class="pulse-label">Prompt completo de video</span>
+                            <button class="copy-btn" onclick="copyOutput('output-video', this)">
+                                <i class="fas fa-copy"></i> <span>Copiar</span>
+                            </button>
+                        </div>
+                        <div class="output-box" id="output-video"></div>
+                    </div>
+
+                    <div style="margin-top:2rem;">
+                        <div class="pulse-row">
+                            <div class="pulse-dot"></div>
+                            <span class="pulse-label">Banco de micro-acciones — tocá para copiar</span>
+                        </div>
+                        <p class="micro-note">Copiá y pegá cualquiera de estas entre medio del guion, en el punto exacto de la pausa donde ocurre. Formato listo: <code>[se ajusta la gorra]</code></p>
+                        <div id="micro-bank" class="micro-bank"></div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="page-footer">
+        <p>Contenido para Redes con IA Generativa · Metodología ágil</p>
+    </footer>
+
+    <div id="toast"><i class="fas fa-check"></i> ¡Copiado al portapapeles!</div>
+
+    <script>
+        /* ---------- Theme toggle ---------- */
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            if (isDark) {
+                icon.className = 'fas fa-moon';
+                text.textContent = 'Oscuro';
+            } else {
+                icon.className = 'fas fa-sun';
+                text.textContent = 'Claro';
+            }
+        }
+
+        /* ---------- Data ---------- */
+        const ACCENTS = {
+            ar_rio: { idioma: "español", desc: "acento español rioplatense de Argentina/Uruguay, con voseo natural ('vos tenés', 'sabés'), entonación característica de Buenos Aires, ritmo relajado con caída melódica al final de las frases" },
+            co_paisa: { idioma: "español", desc: "acento colombiano paisa (Medellín), cadencia suave y cantada, uso natural de 'parce', 'pues', 'qué más'" },
+            mx_neutro: { idioma: "español", desc: "acento mexicano neutro (CDMX), cálido y claro, uso natural de diminutivos" },
+            es_madrid: { idioma: "español", desc: "acento español peninsular de Madrid, distinción de 'c/z', ritmo rápido y directo, uso de 'vale', 'tío/tía'" },
+            cl_santiago: { idioma: "español", desc: "acento chileno de Santiago, habla rápida, aspiración de la 's' final, modismos como 'po', 'cachái'" },
+            pe_lima: { idioma: "español", desc: "acento peruano de Lima, entonación pausada, clara y educada" },
+            ve_caracas: { idioma: "español", desc: "acento venezolano de Caracas, cálido y expresivo, uso natural de 'chamo/chama'" },
+            us_en: { idioma: "inglés", desc: "neutral American English accent, casual and upbeat" },
+            uk_en: { idioma: "inglés", desc: "British English accent (London / RP), conversational tone" },
+            br_pt: { idioma: "portugués", desc: "acento carioca de Brasil (Río de Janeiro), habla melódica y cercana" },
+        };
+
+        const CAMERA = {
+            selfie_pulso: "Cámara frontal de celular sostenida a pulso por la propia protagonista: leve temblor natural e involuntario de la mano, micro-oscilaciones verticales y horizontales sutiles, sin estabilizador, look 100% casero tipo historia de Instagram/TikTok recién grabada",
+            selfie_gimbal: "Cámara frontal con leve estabilización tipo gimbal casero: movimiento suave y fluido, pero conservando pequeñas variaciones naturales de encuadre, sensación de cámara en mano bien sostenida",
+            tripode_fijo: "Cámara fija sobre trípode o superficie estable: encuadre completamente estático, sin paneos ni temblores, todo el movimiento ocurre dentro del cuadro por parte de la protagonista",
+            tercero_mano: "Cámara sostenida por otra persona (no selfie): ligeros movimientos de mano al grabar, distancia media, ángulo que varía levemente como en una grabación espontánea",
+        };
+
+        const MICRO = {
+            sutil: "Micromovimientos sutiles y naturales: parpadeo espontáneo, respiración visible en hombros y pecho, pequeños giros de cabeza, la mirada se desvía brevemente de cámara y vuelve",
+            natural: "Micromovimientos naturales: parpadeo espontáneo, respiración visible, pequeños ajustes de postura y peso corporal, gestos leves con las manos al hablar, sonrisas que aparecen y desaparecen de forma orgánica",
+            expresivo: "Micromovimientos expresivos: todo lo anterior más gestos amplios con las manos, expresiones faciales marcadas acorde al guion, movimientos de cabeza notorios y energía corporal alta, sin perder naturalidad",
+        };
+
+        const MICRO_ACTIONS = [
+            "se ajusta la gorra",
+            "da un sorbo de café y deja la taza",
+            "se arregla el pelo",
+            "saluda con la mano",
+            "se ríe",
+            "con cara de sorpresa",
+            "asiente despacio, sonriendo",
+            "señala hacia arriba",
+            "señala hacia la izquierda",
+            "señala hacia la derecha",
+            "cruza los brazos",
+            "se encoge de hombros",
+            "hace un gesto de aprobación con el pulgar",
+            "da una palmada",
+            "inclina la cabeza con curiosidad",
+            "se ajusta las gafas",
+            "se coloca el pelo detrás de la oreja",
+            "se toca la barbilla, pensativo/a",
+            "chasquea los dedos",
+            "pone los ojos en blanco, en broma",
+            "se muerde el labio",
+            "parpadea y mira hacia otro lado por un segundo",
+            "se acomoda la remera",
+            "suspira",
+            "se frota las manos",
+            "inclina el cuerpo hacia adelante",
+            "guiña un ojo",
+            "se lleva la mano al pecho",
+            "niega con la cabeza",
+            "levanta las cejas",
+            "junta las manos",
+            "se toca el cabello con ambas manos",
+            "abre los ojos grandes de asombro",
+            "respira hondo y sonríe",
+            "gira levemente la cabeza hacia la cámara",
+            "acerca el rostro un poco más a la cámara",
+            "se aleja levemente de la cámara",
+            "levanta el producto y lo muestra de cerca",
+            "señala el producto que tiene en la mano",
+            "sonríe de costado, cómplice",
+        ];
+
+        /* ---------- Helpers ---------- */
+        function val(id) { return document.getElementById(id).value; }
+
+        function buildImagePrompt() {
+            const personaje = val('cfg-personaje').trim();
+            const tipo = document.getElementById('cfg-tipo').selectedOptions[0].value;
+            const formato = document.getElementById('cfg-formato').selectedOptions[0].value;
+            const camKey = val('cfg-camara');
+            const camText = camKey.startsWith('selfie') ? "Tomada con cámara frontal de celular (no cámara profesional)." : "Tomada con cámara de celular en mano (no cámara profesional).";
+            return `Imagen ${formato}, formato ${tipo}. ${personaje} ${camText} Luz completamente natural — nada de iluminación de estudio ni luz de relleno artificial, ligeramente despareja como en un ambiente real. Se ve como un video/foto real autograbado, del tipo que alguien subiría a Instagram o TikTok ahora mismo. Leve distorsión propia del lente frontal. Piel natural — poros, textura sutil, sin retoque. Expresión relajada y casual, sin pose forzada. Vestimenta y entorno cotidianos. Sin look cinematográfico, sin color grading, sin efecto bokeh — solo calidad cruda y auténtica de cámara de celular. Hiperrealista, ultra detallada, fiel a la realidad.`;
+        }
+
+        function buildScriptPrompt() {
+            const tema = val('cfg-tema').trim();
+            const duracion = val('cfg-duracion').trim() || "20";
+            const tono = document.getElementById('cfg-tono').selectedOptions[0].value;
+            const accKey = val('cfg-acento');
+            const acc = ACCENTS[accKey];
+            const personaje = val('cfg-personaje').trim();
+            return `Creame un guion publicitario de ${duracion} segundos, dividido en 3 partes (gancho inicial, desarrollo, cierre con llamado a la acción), donde ${personaje.charAt(0).toLowerCase() + personaje.slice(1)} habla sobre lo siguiente: ${tema}. El guion tiene que sonar ${tono}, escrito en ${acc.idioma}, pensado para que se hable con ${acc.desc}. Usá expresiones y giros propios de ese acento, evitando sonar neutro o de manual. Nada de lenguaje corporativo ni forzado. Dejá pausas naturales entre frases (comas, puntos, cambios de idea) para que después se puedan intercalar micro-acciones físicas del personaje en esos puntos.`;
+        }
+
+        function buildVideoPrompt() {
+            const personaje = val('cfg-personaje').trim();
+            const tipo = document.getElementById('cfg-tipo').selectedOptions[0].value;
+            const formato = document.getElementById('cfg-formato').selectedOptions[0].value;
+            const camKey = val('cfg-camara');
+            const microKey = val('cfg-micro');
+            const accKey = val('cfg-acento');
+            const acc = ACCENTS[accKey];
+            const script = val('script-input').trim();
+            const scriptBlock = script ? script : "[ Pegá tu guion arriba para completar el prompt ]";
+
+            return `Video UGC ${formato}, estilo ${tipo}, duración acorde al guion. ${personaje}
+
+CONSISTENCIA TOTAL: mismo rostro, mismo peinado, mismo outfit, mismo entorno y misma iluminación durante todo el video — cero cambios entre fotogramas, cero variación del personaje o el producto de principio a fin.
+
+MOVIMIENTO DE CÁMARA: ${CAMERA[camKey]}
+
+MICROMOVIMIENTOS DEL PERSONAJE: ${MICRO[microKey]}
+
+MICRO-ACCIONES INTERCALADAS EN EL GUION: si en algún punto del guion hace falta reforzar naturalidad con una acción física puntual mientras la persona habla, intercalarla directamente en el texto entre corchetes, en el momento exacto en que ocurre (no al final ni aparte). Formato: "texto hablado [micro-acción física breve y natural, en tercera persona] texto hablado que continúa". La acción tiene que ser coherente con lo que se está diciendo en ese instante — un gesto con la mano, acomodarse el pelo, cambiar de postura, mirar brevemente hacia un costado y volver a cámara, tocar el objeto que sostiene, etc. — y solo debe insertarse en pausas naturales del habla, sin forzarla en cada frase.
+
+GUION A INTERPRETAR (hablado directo a cámara, sincronía labial precisa, con micro-acciones entre corchetes donde corresponda):
+${scriptBlock}
+
+VOZ E IDIOMA: voz femenina joven (20-30 años) — ajustar género/edad según el personaje —, hablando en ${acc.idioma} con ${acc.desc}. Tono conversacional, ${document.getElementById('cfg-tono').selectedOptions[0].value}, estilo creador/a de contenido. Ritmo de habla dinámico y natural, con inflexiones expresivas y pausas reales para respirar, evitando cualquier cadencia robótica o de locutor genérico.
+
+CALIDAD: hiperrealista, sin look cinematográfico ni color grading exagerado, textura y grano propios de una grabación auténtica de celular, sonido ambiente sutil y coherente con el entorno.`;
+        }
+
+        function updateAll() {
+            document.getElementById('output-imagen').textContent = buildImagePrompt();
+            document.getElementById('output-guion').textContent = buildScriptPrompt();
+            document.getElementById('output-video').textContent = buildVideoPrompt();
+        }
+
+        function renderMicroBank() {
+            const bank = document.getElementById('micro-bank');
+            bank.innerHTML = '';
+            MICRO_ACTIONS.forEach(action => {
+                const chip = document.createElement('span');
+                chip.className = 'micro-chip';
+                chip.textContent = `[${action}]`;
+                chip.onclick = () => copyChip(`[${action}]`, chip);
+                bank.appendChild(chip);
+            });
+        }
+
+        function copyToClipboard(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+        }
+
+        function copyOutput(elementId, btn) {
+            const text = document.getElementById(elementId).textContent;
+            try {
+                copyToClipboard(text);
+                showToast();
+                const orig = btn.innerHTML;
+                btn.classList.add('copied');
+                btn.innerHTML = `<i class="fas fa-check"></i> <span>¡Copiado!</span>`;
+                setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+            } catch(e) { console.error(e); }
+        }
+
+        function copyChip(text, chip) {
+            try {
+                copyToClipboard(text);
+                showToast();
+                chip.classList.add('copied');
+                setTimeout(() => chip.classList.remove('copied'), 1200);
+            } catch(e) { console.error(e); }
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2200);
+        }
+
+        updateAll();
+        renderMicroBank();
+    </script>
+</body>
+</html>
