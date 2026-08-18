@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Prompt Pro | Ailen Catriel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700;800&family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      /* --- Design tokens (ailencatriel.com neobrutalist system) --- */
+      --font-sans: 'Montserrat', sans-serif;
+      --font-heading: 'Oswald', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 8px;
+      --radius-md: 10px;
+      --radius-lg: 12px;
+      --border-width: 3px;
+      --ease: cubic-bezier(.23, 1, .32, 1);
+    }
+
+    html[data-theme="light"] {
+      --bg: #ffffff;
+      --bg-soft: #ffffff;
+      --surface: #ffffff;
+      --surface-hover: #f2f2f2;
+      --border: #000000;
+      --text: #000000;
+      --text-dim: #5b5b5b;
+      --text-faint: #8a8a8a;
+      --accent: #FFEA00;
+      --danger: #e8352b;
+      --success: #1dbe5b;
+      --shadow-color: #000000;
+      --shadow-hard: 4px 4px 0px 0px var(--shadow-color);
+      --shadow-hard-lg: 8px 8px 0px 0px var(--shadow-color);
+      --code-bg: #0a0a0a;
+      --code-border: #000000;
+      --code-key: #7dd3fc;
+      --code-str: #8ce99a;
+      --code-num: #FFEA00;
+      --code-bool: #ff9f7d;
+      --code-punct: #8a8a8a;
+      --code-text: #d8d8e0;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #111111;
+      --bg-soft: #1a1a1a;
+      --surface: #1a1a1a;
+      --surface-hover: #242424;
+      --border: #ffffff;
+      --text: #ffffff;
+      --text-dim: #b8b8b8;
+      --text-faint: #7d7d7d;
+      --accent: #FFEA00;
+      --danger: #ff6b5b;
+      --success: #3ee08a;
+      --shadow-color: #FFEA00;
+      --shadow-hard: 4px 4px 0px 0px var(--shadow-color);
+      --shadow-hard-lg: 8px 8px 0px 0px var(--shadow-color);
+      --code-bg: #0a0a0a;
+      --code-border: #ffffff;
+      --code-key: #7dd3fc;
+      --code-str: #8ce99a;
+      --code-num: #FFEA00;
+      --code-bool: #ff9f7d;
+      --code-punct: #8a8a8a;
+      --code-text: #d8d8e0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg) !important;
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      min-height: 100vh;
+      transition: background-color .3s ease, color .3s ease;
+    }
+
+    .top-strip {
+      height: 8px;
+      background: var(--accent);
+      border-bottom: var(--border-width) solid var(--border);
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 1.75rem 1.5rem 3rem;
+    }
+
+    .nav-row {
+      margin-bottom: 1.6rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-family: var(--font-sans);
+      font-weight: 800;
+      font-size: .78rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 999px;
+      padding: .45rem 1rem;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .back-link:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 3px 3px 0px 0px var(--shadow-color);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-bottom: 2.6rem;
+      animation: fadeInDown .8s var(--ease);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-mark {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 1.4rem;
+      width: 52px;
+      height: 52px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      background: var(--text);
+      color: var(--accent);
+      border: var(--border-width) solid var(--border);
+      box-shadow: var(--shadow-hard);
+    }
+
+    .brand h1 {
+      font-family: var(--font-heading);
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: .01em;
+      text-transform: uppercase;
+    }
+
+    .accent-text {
+      background: var(--accent);
+      color: var(--text);
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      padding: 0 .3rem;
+    }
+
+    .subtitle {
+      color: var(--text-dim);
+      font-size: .92rem;
+      font-weight: 500;
+      margin-top: .25rem;
+    }
+
+    #theme-toggle {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: var(--border-width) solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    #theme-toggle:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: var(--shadow-hard);
+    }
+
+    #theme-toggle svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    html[data-theme="dark"] .icon-sun {
+      display: block;
+    }
+
+    html[data-theme="dark"] .icon-moon {
+      display: none;
+    }
+
+    html[data-theme="light"] .icon-sun {
+      display: none;
+    }
+
+    html[data-theme="light"] .icon-moon {
+      display: block;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 1.75rem;
+      align-items: start;
+    }
+
+    .glass {
+      background: var(--surface);
+      border: var(--border-width) solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-hard-lg);
+      transition: background-color .3s ease, border-color .3s ease, box-shadow .3s ease;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.1rem;
+      border-bottom: var(--border-width) solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .panel-header h2 {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+    }
+
+    .header-controls {
+      display: flex;
+      gap: .6rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .input-group {
+      margin-bottom: 1.35rem;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .half {
+      flex: 1;
+      min-width: 0;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: .5rem;
+      font-size: .78rem;
+      color: var(--text-dim);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      background: var(--surface);
+      border: var(--border-width) solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: .8rem 1rem;
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: .93rem;
+      outline: none;
+      transition: box-shadow .15s ease;
+    }
+
+    select {
+      appearance: none;
+      cursor: pointer;
+      background-repeat: no-repeat;
+      background-position: right .9rem center;
+      background-size: 1rem;
+      padding-right: 2.4rem;
+    }
+
+    html[data-theme="light"] select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+
+    html[data-theme="dark"] select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+
+    textarea {
+      min-height: 84px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      box-shadow: 3px 3px 0px 0px var(--shadow-color);
+    }
+
+    .field-hint {
+      font-size: .7rem;
+      color: var(--text-faint);
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .chip {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      font-weight: 600;
+      padding: .4rem .75rem;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: background-color .15s ease, color .15s ease;
+    }
+
+    .chip:hover {
+      background: var(--text);
+      color: var(--accent);
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-ghost {
+      cursor: pointer;
+      font-weight: 800;
+      font-family: var(--font-sans);
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      border-radius: var(--radius-sm);
+      padding: .7rem 1.15rem;
+      font-size: .8rem;
+      transition: transform .15s ease, box-shadow .15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      border: var(--border-width) solid var(--border);
+    }
+
+    .btn-primary {
+      background: var(--text);
+      color: var(--bg);
+      box-shadow: var(--shadow-hard);
+    }
+
+    .btn-primary:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px 0px var(--shadow-color);
+    }
+
+    .btn-primary:active {
+      transform: translate(0, 0);
+      box-shadow: 2px 2px 0px 0px var(--shadow-color);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: var(--shadow-hard);
+    }
+
+    .btn-secondary:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px 0px var(--shadow-color);
+    }
+
+    .btn-secondary:active {
+      transform: translate(0, 0);
+      box-shadow: 2px 2px 0px 0px var(--shadow-color);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-dim);
+      border-color: transparent;
+      padding: .5rem .7rem;
+      box-shadow: none;
+    }
+
+    .btn-ghost:hover {
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn-small {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      color: var(--text);
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      transition: background-color .15s ease, color .15s ease;
+    }
+
+    .btn-small:hover {
+      background: var(--text);
+      color: var(--accent);
+    }
+
+    .btn-delete {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .btn-delete:hover {
+      background: var(--danger);
+      color: var(--bg);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: .7rem;
+      margin-top: 1.6rem;
+      flex-wrap: wrap;
+    }
+
+    #video-fields {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height .4s var(--ease), opacity .3s ease;
+    }
+
+    #video-fields.active {
+      max-height: 600px;
+      opacity: 1;
+    }
+
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      margin: 1.6rem 0 1.1rem;
+      font-size: .74rem;
+      color: var(--text-faint);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: var(--border-width);
+      background: var(--border);
+    }
+
+    .constraint-item {
+      display: flex;
+      gap: .5rem;
+      margin-bottom: .55rem;
+      animation: slideInRight .35s ease forwards;
+    }
+
+    .constraint-item input {
+      flex: 1;
+    }
+
+    .tabs {
+      display: flex;
+      gap: .3rem;
+      background: var(--surface);
+      padding: .25rem;
+      border-radius: 999px;
+      border: var(--border-width) solid var(--border);
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      padding: .45rem .9rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background-color .15s ease, color .15s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--text);
+      color: var(--accent);
+    }
+
+    .json-output-wrapper {
+      background: var(--code-bg);
+      border-radius: var(--radius-md);
+      padding: 1.4rem;
+      border: var(--border-width) solid var(--code-border);
+      overflow-x: auto;
+      max-height: 480px;
+      overflow-y: auto;
+      transition: border-color .3s ease;
+    }
+
+    #json-output {
+      font-family: var(--font-mono);
+      font-size: .84rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: var(--code-text);
+    }
+
+    #json-output .key {
+      color: var(--code-key);
+    }
+
+    #json-output .str {
+      color: var(--code-str);
+    }
+
+    #json-output .num {
+      color: var(--code-num);
+    }
+
+    #json-output .bool {
+      color: var(--code-bool);
+    }
+
+    #json-output .punct {
+      color: var(--code-punct);
+    }
+
+    .output-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: .9rem;
+      font-size: .74rem;
+      color: var(--text-faint);
+      font-family: var(--font-mono);
+    }
+
+    .actions {
+      display: flex;
+      gap: .55rem;
+      flex-wrap: wrap;
+    }
+
+    .profile-card {
+      margin-top: 1.75rem;
+      display: flex;
+      align-items: center;
+      gap: 1.3rem;
+      animation: fadeInUp .8s ease backwards .5s;
+    }
+
+    .profile-image-container {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: var(--accent);
+      border: var(--border-width) solid var(--border);
+      transition: transform .3s var(--ease);
+    }
+
+    .profile-image-container:hover {
+      transform: scale(1.06) rotate(3deg);
+    }
+
+    #profile-pic {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .profile-info h3 {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: .15rem;
+    }
+
+    .instagram-link {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: .85rem;
+      transition: opacity .2s ease;
+    }
+
+    .instagram-link:hover {
+      opacity: .65;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: var(--border-width) solid var(--border);
+      color: var(--text-faint);
+      font-size: .82rem;
+      font-weight: 600;
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--text);
+      color: var(--bg);
+      border: var(--border-width) solid var(--border);
+      padding: .65rem 1.25rem;
+      border-radius: 999px;
+      font-size: .82rem;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: all .3s var(--ease);
+      z-index: 100;
+      box-shadow: var(--shadow-hard);
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .app-grid>section:nth-child(1) {
+      animation: fadeInUp .8s var(--ease) .15s both;
+    }
+
+    .app-grid>section:nth-child(2) {
+      animation: fadeInUp .8s var(--ease) .3s both;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--text-faint);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+
+    @media (max-width: 968px) {
+      .app-grid {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        flex-wrap: wrap;
+      }
+
+      .glass {
+        padding: 1.4rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-strip"></div>
+  <div class="container">
+
+    <div class="nav-row">
+      <a class="back-link" href="recursos.html">&larr; ATRÁS</a>
+    </div>
+
+    <header>
+      <div class="brand">
+        <span class="logo-mark">{ }</span>
+        <div>
+          <h1>JSON <span class="accent-text">PROMPT</span> PRO</h1>
+          <p class="subtitle">Estructura tus prompts de IA con precisión quirúrgica</p>
+        </div>
+      </div>
+      <button id="theme-toggle" aria-label="Cambiar tema claro/oscuro" title="Cambiar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path
+            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41">
+          </path>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+    </header>
+
+    <main class="app-grid">
+
+      <section class="config-panel glass">
+        <div class="panel-header">
+          <h2>Configuración</h2>
+          <div class="header-controls">
+            <select id="prompt-template" aria-label="Tipo de generación">
+              <option value="images">🖼️ IMAGEN</option>
+              <option value="videos">🎬 VIDEO</option>
+            </select>
+            <select id="input-engine" aria-label="Motor de IA"></select>
+          </div>
+        </div>
+
+        <div class="chips-row" id="quick-chips"></div>
+
+        <div class="input-group">
+          <label>Sujeto / Persona</label>
+          <input type="text" id="input-subject" placeholder="Ej: Una mujer samurái ciberpunk">
+        </div>
+
+        <div class="input-group">
+          <label>Prompt / Instrucción <span class="field-hint" id="instruction-count">0 caract.</span></label>
+          <textarea id="input-instruction" placeholder="Describe la acción o detalle principal..."></textarea>
+        </div>
+
+        <div class="input-group">
+          <label>Fondo / Escenario</label>
+          <textarea id="input-background" placeholder="Describe el escenario..."></textarea>
+        </div>
+
+        <div class="input-row">
+          <div class="input-group half">
+            <label>Estilo Visual</label>
+            <select id="input-style">
+              <option value="photorealistic">Fotorealista</option>
+              <option value="anime">Anime / Manga</option>
+              <option value="cyberpunk">Cyberpunk</option>
+              <option value="oil-painting">Pintura al Óleo</option>
+              <option value="3d-render">Render 3D (Unreal Engine 5)</option>
+              <option value="pixel-art">Pixel Art</option>
+              <option value="vaporwave">Vaporwave</option>
+              <option value="surrealism">Surrealismo</option>
+              <option value="watercolor">Acuarela</option>
+              <option value="claymation">Claymation / Stop Motion</option>
+            </select>
+          </div>
+          <div class="input-group half">
+            <label>Aspect Ratio</label>
+            <select id="input-ratio">
+              <option value="16:9">16:9 (Widescreen)</option>
+              <option value="9:16">9:16 (TikTok/Reels)</option>
+              <option value="1:1">1:1 (Square)</option>
+              <option value="4:5">4:5 (Instagram)</option>
+              <option value="21:9">21:9 (Cinerama)</option>
+              <option value="3:2">3:2 (Fotografía Clásica)</option>
+              <option value="2:3">2:3 (Retrato)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="input-group half">
+            <label>Iluminación</label>
+            <select id="input-lighting">
+              <option value="cinematic">Cinemática</option>
+              <option value="golden-hour">Golden Hour</option>
+              <option value="studio-lighting">Iluminación de Estudio</option>
+              <option value="neon-glow">Brillo Neón</option>
+              <option value="soft-lighting">Luz Suave</option>
+              <option value="harsh-lighting">Luz Dura / Sombras marcadas</option>
+              <option value="volumetric">Volumétrica (God Rays)</option>
+              <option value="sunset">Atardecer</option>
+              <option value="moonlight">Luz de Luna</option>
+              <option value="bioluminescent">Bioluminiscente</option>
+              <option value="rim-lighting">Rim Lighting (Contraluz)</option>
+              <option value="high-key">High-Key (Muy brillante)</option>
+              <option value="low-key">Low-Key (Oscuro y dramático)</option>
+              <option value="dramatic-contrast">Contraste Dramático</option>
+            </select>
+          </div>
+          <div class="input-group half">
+            <label>Ángulo de Cámara</label>
+            <select id="input-camera">
+              <option value="eye-level">Nivel de los ojos (Estándar)</option>
+              <option value="low-angle">Ángulo Bajo (Heroico)</option>
+              <option value="high-angle">Ángulo Alto</option>
+              <option value="birds-eye">Vista de Pájaro (Cenital)</option>
+              <option value="worms-eye">Vista de Gusano (Nadir)</option>
+              <option value="wide-shot">Plano General (Wide Shot)</option>
+              <option value="close-up">Primer Plano (Close-up)</option>
+              <option value="extreme-close-up">Primerísimo Primer Plano</option>
+              <option value="dutch-angle">Ángulo Holandés (Inclinado)</option>
+              <option value="over-the-shoulder">Sobre el hombro</option>
+              <option value="pov">Punto de Vista (POV)</option>
+              <option value="macro">Macro (Detalle extremo)</option>
+              <option value="panorama">Panorámico</option>
+              <option value="side-view">Vista Lateral</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="video-fields">
+          <div class="section-divider">Parámetros de video</div>
+          <div class="input-row">
+            <div class="input-group half">
+              <label>Movimiento de Cámara</label>
+              <select id="input-movement">
+                <option value="static">Estático</option>
+                <option value="pan">Paneo</option>
+                <option value="dolly-in">Traveling hacia adelante</option>
+                <option value="dolly-out">Traveling hacia atrás</option>
+                <option value="tracking">Seguimiento (Tracking)</option>
+                <option value="zoom-in">Zoom In</option>
+                <option value="zoom-out">Zoom Out</option>
+                <option value="crane">Grúa (Crane)</option>
+                <option value="handheld">Cámara en mano</option>
+                <option value="orbit">Órbita 360°</option>
+              </select>
+            </div>
+            <div class="input-group half">
+              <label>Duración (segundos)</label>
+              <input type="number" id="input-duration" min="1" max="60" value="5">
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Velocidad</label>
+            <select id="input-speed">
+              <option value="normal">Normal</option>
+              <option value="slow-motion">Cámara Lenta (Slow Motion)</option>
+              <option value="timelapse">Timelapse</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section-divider">Prompts negativos</div>
+        <div class="input-group">
+          <label>Restricciones <button id="add-constraint" class="btn-small" type="button"
+              title="Agregar restricción">+</button></label>
+          <div id="constraints-list"></div>
+        </div>
+
+        <div class="form-actions">
+          <button id="randomize-btn" class="btn-secondary" type="button">🎲 Aleatorizar</button>
+          <button id="reset-btn" class="btn-ghost" type="button">Reiniciar</button>
+        </div>
+      </section>
+
+      <section class="preview-panel glass">
+        <div class="panel-header">
+          <h2>Vista Previa</h2>
+          <div class="tabs">
+            <button class="tab-btn active" data-format="json" type="button">JSON</button>
+            <button class="tab-btn" data-format="text" type="button">Texto plano</button>
+          </div>
+        </div>
+
+        <div class="json-output-wrapper">
+          <pre id="json-output">{ }</pre>
+        </div>
+
+        <div class="output-meta">
+          <span id="char-count">0 caracteres</span>
+          <div class="actions">
+            <button id="copy-btn" class="btn-primary" type="button">Copiar</button>
+            <button id="download-btn" class="btn-secondary" type="button">Descargar</button>
+          </div>
+        </div>
+
+        <div class="profile-card">
+          <div class="profile-image-container">
+            <img src="https://assets.cdn.filesafe.space/nAQdE71xqcn0C0zJjtPc/media/6a301b06d64da5ce6b5d84b3.png"
+              alt="Ailen Catriel" id="profile-pic">
+          </div>
+          <div class="profile-info">
+            <h3>Ailen Catriel</h3>
+            <a href="https://www.instagram.com/ailen.catriel" target="_blank" class="instagram-link" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+              <span>@ailen.catriel</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <p>&copy; 2026© JSON Prompt Pro | Derechos reservados</p>
+    </footer>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      const root = document.documentElement;
+      const themeToggle = document.getElementById('theme-toggle');
+      root.setAttribute('data-theme', 'light');
+
+      themeToggle.addEventListener('click', () => {
+        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+      });
+
+      const inputs = {
+        subject: document.getElementById('input-subject'),
+        instruction: document.getElementById('input-instruction'),
+        background: document.getElementById('input-background'),
+        style: document.getElementById('input-style'),
+        ratio: document.getElementById('input-ratio'),
+        lighting: document.getElementById('input-lighting'),
+        camera: document.getElementById('input-camera'),
+        template: document.getElementById('prompt-template'),
+        engine: document.getElementById('input-engine'),
+        movement: document.getElementById('input-movement'),
+        duration: document.getElementById('input-duration'),
+        speed: document.getElementById('input-speed')
+      };
+
+      const constraintsList = document.getElementById('constraints-list');
+      const addConstraintBtn = document.getElementById('add-constraint');
+      const output = document.getElementById('json-output');
+      const copyBtn = document.getElementById('copy-btn');
+      const downloadBtn = document.getElementById('download-btn');
+      const videoFields = document.getElementById('video-fields');
+      const charCount = document.getElementById('char-count');
+      const instructionCount = document.getElementById('instruction-count');
+      const tabs = document.querySelectorAll('.tab-btn');
+      const toast = document.getElementById('toast');
+      const quickChips = document.getElementById('quick-chips');
+      const randomizeBtn = document.getElementById('randomize-btn');
+      const resetBtn = document.getElementById('reset-btn');
+
+      let negativePrompts = ['blur', 'low quality', 'watermark', 'distorted', 'deformed'];
+      let outputFormat = 'json';
+
+      const engines = {
+        images: ['Midjourney v6', 'DALL·E 3', 'GPT Image 2', 'Nano Banana', 'Stable Diffusion XL', 'Flux', 'Leonardo AI', 'Ideogram'],
+        videos: ['Sora', 'Runway Gen-3', 'Kling AI', 'Pika Labs', 'Luma Dream Machine', 'Google Veo']
+      };
+
+      const chipWords = ['8k', 'ultra detallado', 'cinematic', 'trending on artstation', 'hyperrealistic', 'sharp focus', 'award winning'];
+
+      const templates = {
+        images: {
+          subject: 'Cyberpunk Samurai',
+          instruction: 'Standing vertically holding a glowing katana',
+          background: 'Rainy Tokyo alley at night with neon signs',
+          style: 'photorealistic',
+          ratio: '2:3',
+          lighting: 'neon-glow',
+          camera: 'eye-level'
+        },
+        videos: {
+          subject: 'Dragon flying over mountains',
+          instruction: 'Slow wings flapping, smoke coming from mouth',
+          background: 'Epic snowy peaks at sunset',
+          style: '3d-render',
+          ratio: '21:9',
+          lighting: 'volumetric',
+          camera: 'wide-shot',
+          movement: 'tracking',
+          duration: 8,
+          speed: 'normal'
+        }
+      };
+
+      function populateEngines() {
+        const list = engines[inputs.template.value];
+        inputs.engine.innerHTML = list.map(e => `<option value="${e}">${e}</option>`).join('');
+      }
+
+      function renderChips() {
+        quickChips.innerHTML = chipWords.map(w => `<button type="button" class="chip" data-word="${w}">+ ${w}</button>`).join('');
+      }
+
+      quickChips.addEventListener('click', (e) => {
+        const chip = e.target.closest('.chip');
+        if (!chip) return;
+        const word = chip.dataset.word;
+        const current = inputs.instruction.value.trim();
+        inputs.instruction.value = current ? `${current}, ${word}` : word;
+        updateJSON();
+      });
+
+      function renderConstraints() {
+        constraintsList.innerHTML = '';
+        negativePrompts.forEach((p, index) => {
+          const div = document.createElement('div');
+          div.className = 'constraint-item';
+          div.innerHTML = `
+        <input type="text" value="${p.replace(/"/g, '&quot;')}" data-index="${index}" class="constraint-input">
+        <button class="btn-small btn-delete" type="button" data-index="${index}" title="Eliminar">×</button>
+      `;
+          constraintsList.appendChild(div);
+        });
+        updateJSON();
+      }
+
+      constraintsList.addEventListener('input', (e) => {
+        if (e.target.classList.contains('constraint-input')) {
+          negativePrompts[+e.target.dataset.index] = e.target.value;
+          updateJSON();
+        }
+      });
+
+      constraintsList.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-delete');
+        if (!btn) return;
+        negativePrompts.splice(+btn.dataset.index, 1);
+        renderConstraints();
+      });
+
+      addConstraintBtn.addEventListener('click', () => {
+        negativePrompts.push('');
+        renderConstraints();
+      });
+
+      function buildData() {
+        const isVideo = inputs.template.value === 'videos';
+
+        const data = {
+          prompt_type: isVideo ? 'VIDEO' : 'IMAGE',
+          engine: inputs.engine.value,
+          subject: inputs.subject.value,
+          action: inputs.instruction.value,
+          scene: {
+            background: inputs.background.value,
+            lighting: inputs.lighting.value,
+            visual_style: inputs.style.value
+          },
+          camera: {
+            angle: inputs.camera.value,
+            aspect_ratio: inputs.ratio.value
+          },
+          negative_prompt: negativePrompts.filter(p => p.trim() !== ''),
+          meta: {
+            app: 'JSON Prompt Pro',
+            generated_at: new Date().toISOString()
+          }
+        };
+
+        if (isVideo) {
+          data.motion = {
+            camera_movement: inputs.movement.value,
+            duration_seconds: Number(inputs.duration.value) || 0,
+            speed: inputs.speed.value
+          };
+        }
+
+        return data;
+      }
+
+      function buildPlainText(data) {
+        const parts = [data.subject, data.action, data.scene.background, data.scene.visual_style, data.scene.lighting, data.camera.angle];
+        if (data.motion) {
+          parts.push(data.motion.camera_movement, `${data.motion.duration_seconds}s`, data.motion.speed);
+        }
+        let text = parts.filter(Boolean).join(', ');
+        text += ` --ar ${data.camera.aspect_ratio}`;
+        if (data.negative_prompt.length) text += ` --no ${data.negative_prompt.join(', ')}`;
+        return text;
+      }
+
+      function syntaxHighlight(jsonString) {
+        const escaped = jsonString
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+        return escaped.replace(
+          /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+          (match) => {
+            let cls = 'num';
+            if (/^"/.test(match)) {
+              cls = /:$/.test(match) ? 'key' : 'str';
+            } else if (/true|false|null/.test(match)) {
+              cls = 'bool';
+            }
+            return `<span class="${cls}">${match}</span>`;
+          }
+        );
+      }
+
+      let lastRendered = '';
+
+      function updateJSON() {
+        const data = buildData();
+        const jsonString = JSON.stringify(data, null, 4);
+        const textString = buildPlainText(data);
+
+        const raw = outputFormat === 'json' ? jsonString : textString;
+        if (raw === lastRendered) return;
+        lastRendered = raw;
+
+        output.innerHTML = outputFormat === 'json' ? syntaxHighlight(jsonString) : escapeHtml(textString);
+        charCount.textContent = `${raw.length} caracteres`;
+        instructionCount.textContent = `${inputs.instruction.value.length} caract.`;
+
+        output.style.transition = 'none';
+        output.style.opacity = '0.4';
+        requestAnimationFrame(() => {
+          output.style.transition = 'opacity .3s ease';
+          output.style.opacity = '1';
+        });
+      }
+
+      function escapeHtml(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          outputFormat = tab.dataset.format;
+          lastRendered = '';
+          updateJSON();
+        });
+      });
+
+      function applyTemplate(type) {
+        const t = templates[type];
+        inputs.subject.value = t.subject;
+        inputs.instruction.value = t.instruction;
+        inputs.background.value = t.background;
+        inputs.style.value = t.style;
+        inputs.ratio.value = t.ratio;
+        inputs.lighting.value = t.lighting;
+        inputs.camera.value = t.camera;
+        if (type === 'videos') {
+          inputs.movement.value = t.movement;
+          inputs.duration.value = t.duration;
+          inputs.speed.value = t.speed;
+        }
+      }
+
+      inputs.template.addEventListener('change', (e) => {
+        const isVideo = e.target.value === 'videos';
+        videoFields.classList.toggle('active', isVideo);
+        populateEngines();
+        applyTemplate(e.target.value);
+        updateJSON();
+      });
+
+      function randomFrom(select) {
+        const opts = select.options;
+        select.selectedIndex = Math.floor(Math.random() * opts.length);
+      }
+
+      randomizeBtn.addEventListener('click', () => {
+        [inputs.style, inputs.ratio, inputs.lighting, inputs.camera, inputs.engine].forEach(randomFrom);
+        if (inputs.template.value === 'videos') {
+          randomFrom(inputs.movement);
+          randomFrom(inputs.speed);
+          inputs.duration.value = Math.floor(Math.random() * 15) + 3;
+        }
+        updateJSON();
+        showToast('¡Configuración aleatorizada!');
+      });
+
+      resetBtn.addEventListener('click', () => {
+        applyTemplate(inputs.template.value);
+        negativePrompts = ['blur', 'low quality', 'watermark', 'distorted', 'deformed'];
+        renderConstraints();
+        updateJSON();
+        showToast('Formulario reiniciado');
+      });
+
+      let toastTimer;
+      function showToast(msg) {
+        clearTimeout(toastTimer);
+        toast.textContent = msg;
+        toast.classList.add('show');
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+      }
+
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(output.textContent).then(() => {
+          showToast('¡Copiado al portapapeles!');
+        }).catch(() => showToast('No se pudo copiar'));
+      });
+
+      downloadBtn.addEventListener('click', () => {
+        const isJson = outputFormat === 'json';
+        const blob = new Blob([output.textContent], { type: isJson ? 'application/json' : 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `prompt-${inputs.template.value}-${Date.now()}.${isJson ? 'json' : 'txt'}`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('Descarga iniciada');
+      });
+
+      Object.values(inputs).forEach(input => {
+        if (!input) return;
+        input.addEventListener('input', updateJSON);
+        if (input.tagName === 'SELECT') input.addEventListener('change', updateJSON);
+      });
+
+      populateEngines();
+      renderChips();
+      applyTemplate('images');
+      renderConstraints();
+      updateJSON();
+    });
+  </script>
+</body>
+
+</html>

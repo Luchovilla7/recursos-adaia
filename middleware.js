@@ -1,8 +1,8 @@
 import { verifySession } from './lib/session.js';
 
-// Protege la página estática protegida: sin cookie de sesión válida, redirige al login.
+// Protege las páginas estáticas del vault: sin cookie de sesión válida, redirige al login.
 export const config = {
-  matcher: '/contenido-redes-ia.html',
+  matcher: ['/contenido-redes-ia.html', '/json-prompt-pro.html', '/recursos.html'],
 };
 
 function getCookie(request, name) {
@@ -21,7 +21,7 @@ export default async function middleware(request) {
   }
 
   const url = new URL(request.url);
-  const loginUrl = new URL('/login.html', url);
+  const loginUrl = new URL('/', url);
   loginUrl.searchParams.set('next', url.pathname);
   return Response.redirect(loginUrl, 302);
 }

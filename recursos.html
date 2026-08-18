@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vault · Recursos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: #ffffff;
+            --panel-bg: #f5f5f5;
+            --text-color: #000000;
+            --text-muted: #555555;
+            --accent-color: #ffea00;
+            --accent-glow: rgba(255, 234, 0, 0.4);
+            --border-color: #000000;
+            --input-bg: #ffffff;
+            --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        html[data-theme="dark"] {
+            --bg-color: #0d0d0d;
+            --card-bg: #161616;
+            --panel-bg: #1e1e1e;
+            --text-color: #f2f2f2;
+            --text-muted: #a3a3a3;
+            --accent-color: #ffea00;
+            --accent-glow: rgba(255, 234, 0, 0.22);
+            --border-color: #f2f2f2;
+            --input-bg: #101010;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3, .step-label { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 2rem; }
+
+        /* Top bar */
+        .topbar {
+            border-bottom: 3px solid var(--border-color);
+            background: var(--card-bg);
+            position: sticky; top: 0; z-index: 50;
+            transition: var(--transition);
+        }
+        .topbar-inner {
+            max-width: 1000px; margin: 0 auto; padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .brand {
+            display: flex; align-items: center; gap: 0.7rem;
+            font-family: 'Oswald', sans-serif; font-weight: 700; letter-spacing: 1px;
+        }
+        .brand-badge {
+            background: var(--accent-color); color: #000; border: 3px solid var(--border-color);
+            box-shadow: 3px 3px 0px var(--border-color);
+            padding: 0.15rem 0.7rem; font-size: 0.75rem; border-radius: 6px;
+        }
+
+        .theme-toggle {
+            display: flex; align-items: center; gap: 0.6rem;
+            background: var(--card-bg); color: var(--text-color);
+            border: 3px solid var(--border-color); border-radius: 999px;
+            padding: 0.4rem 0.9rem; cursor: pointer;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.8rem;
+            box-shadow: 3px 3px 0px var(--border-color);
+            transition: var(--transition);
+        }
+        .theme-toggle:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-color); }
+        .theme-toggle:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0px var(--border-color); }
+
+        /* Header */
+        header.hero { padding: 3.5rem 0 2.5rem; text-align: center; }
+        .eyebrow {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            font-size: 0.75rem; letter-spacing: 2px; color: var(--text-muted);
+            font-weight: 700; text-transform: uppercase; margin-bottom: 1.2rem;
+        }
+        .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-color); border: 2px solid var(--border-color); }
+        header.hero h1 { font-size: 2.6rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.15; }
+        header.hero h1 .hl {
+            background: var(--accent-color); color: #000; padding: 0.05em 0.35em;
+            box-shadow: 4px 4px 0px var(--border-color); border: 3px solid var(--border-color);
+            display: inline-block;
+        }
+        header.hero p { max-width: 620px; margin: 0 auto; color: var(--text-muted); font-size: 1.05rem; font-weight: 600; }
+
+        main { padding: 1rem 0 5rem; }
+
+        .section-label {
+            display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.5rem;
+        }
+        .section-label .pulse-dot {
+            width: 9px; height: 9px; border-radius: 50%; background: var(--accent-color);
+            border: 2px solid var(--border-color); animation: pulse 2s infinite; flex-shrink: 0;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.75); } }
+        .section-label span.txt {
+            font-family: 'Oswald', sans-serif; font-size: 0.78rem; letter-spacing: 1.5px;
+            text-transform: uppercase; color: var(--text-muted); font-weight: 700;
+        }
+
+        .resource-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;
+        }
+
+        .resource-card {
+            background: var(--card-bg); border: 3px solid var(--border-color); border-radius: 16px;
+            box-shadow: 6px 6px 0px var(--border-color); padding: 1.8rem;
+            display: flex; flex-direction: column; gap: 0.9rem; text-decoration: none; color: var(--text-color);
+            transition: var(--transition); position: relative;
+        }
+        a.resource-card:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0px var(--border-color); }
+        a.resource-card:active { transform: translate(1px, 1px); box-shadow: 3px 3px 0px var(--border-color); }
+
+        .resource-card.locked { opacity: 0.55; cursor: not-allowed; border-style: dashed; }
+
+        .resource-icon {
+            width: 48px; height: 48px; border-radius: 12px; background: var(--accent-color);
+            border: 3px solid var(--border-color); display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; color: #000; flex-shrink: 0;
+        }
+        .resource-card.locked .resource-icon { background: var(--panel-bg); color: var(--text-muted); }
+
+        .resource-card h3 { font-size: 1.15rem; font-weight: 700; line-height: 1.3; }
+        .resource-card p { color: var(--text-muted); font-size: 0.9rem; font-weight: 600; flex-grow: 1; }
+
+        .resource-cta {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            font-family: 'Oswald', sans-serif; font-size: 0.82rem; letter-spacing: 0.5px;
+            font-weight: 700; margin-top: 0.3rem;
+        }
+        .resource-cta i { transition: transform 0.2s ease; }
+        a.resource-card:hover .resource-cta i { transform: translateX(4px); }
+
+        .resource-badge {
+            align-self: flex-start; background: var(--panel-bg); border: 2px solid var(--border-color);
+            border-radius: 999px; padding: 0.3rem 0.8rem; font-family: 'Oswald', sans-serif;
+            font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); font-weight: 700;
+        }
+        .resource-badge.live { background: var(--accent-color); color: #000; border-color: var(--border-color); }
+
+        footer.page-footer {
+            border-top: 3px solid var(--border-color); padding: 2rem 0; text-align: center;
+            color: var(--text-muted); font-size: 0.85rem; font-weight: 600;
+        }
+
+        @media (max-width: 700px) {
+            header.hero h1 { font-size: 2rem; }
+            .resource-card { padding: 1.4rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">
+                <span class="brand-badge">VAULT</span>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
+                <i class="fas fa-moon" id="theme-icon"></i>
+                <span id="theme-text">Oscuro</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header class="hero">
+            <div class="eyebrow"><span class="dot"></span> Bóveda de recursos</div>
+            <h1>Tus <span class="hl">recursos</span> en un solo lugar</h1>
+            <p>Accedé a las herramientas y guías disponibles. Elegí un recurso para entrar.</p>
+        </header>
+
+        <main>
+            <div class="section-label">
+                <div class="pulse-dot"></div>
+                <span class="txt">Recursos disponibles</span>
+            </div>
+
+            <div class="resource-grid">
+
+                <a class="resource-card" href="contenido-redes-ia.html">
+                    <div class="resource-icon"><i class="fas fa-clapperboard"></i></div>
+                    <h3>Contenido para Redes con IA Generativa</h3>
+                    <p>Armá en segundos los prompts de imagen, guion y video 100% consistentes para tus reels y shorts.</p>
+                    <span class="resource-badge live">Disponible</span>
+                    <span class="resource-cta">Ingresar <i class="fas fa-arrow-right"></i></span>
+                </a>
+
+                <a class="resource-card" href="json-prompt-pro.html">
+                    <div class="resource-icon"><i class="fas fa-code"></i></div>
+                    <h3>JSON Prompt Pro</h3>
+                    <p>Estructurá tus prompts de IA con precisión quirúrgica, listos para imagen y video.</p>
+                    <span class="resource-badge live">Disponible</span>
+                    <span class="resource-cta">Ingresar <i class="fas fa-arrow-right"></i></span>
+                </a>
+
+                <div class="resource-card locked" aria-disabled="true">
+                    <div class="resource-icon"><i class="fas fa-hourglass-half"></i></div>
+                    <h3>Más recursos en camino</h3>
+                    <p>Próximamente se agregarán más recursos a la bóveda. Volvé a pasar por aquí para descubrir las nuevas herramientas.</p>
+                    <span class="resource-badge">Próximamente</span>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <footer class="page-footer">
+        <p>Vault · Bóveda de Recursos</p>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            if (isDark) {
+                icon.className = 'fas fa-moon';
+                text.textContent = 'Oscuro';
+            } else {
+                icon.className = 'fas fa-sun';
+                text.textContent = 'Claro';
+            }
+        }
+    </script>
+</body>
+</html>
