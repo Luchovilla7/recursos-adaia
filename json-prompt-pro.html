@@ -208,6 +208,36 @@
       height: 20px;
     }
 
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      flex-shrink: 0;
+    }
+
+    .logout-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-family: var(--font-sans);
+      font-weight: 800;
+      font-size: .78rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 999px;
+      padding: .45rem 1rem;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .logout-link:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 3px 3px 0px 0px var(--shadow-color);
+    }
+
     html[data-theme="dark"] .icon-sun {
       display: block;
     }
@@ -787,19 +817,22 @@
           <p class="subtitle">Estructura tus prompts de IA con precisión quirúrgica</p>
         </div>
       </div>
-      <button id="theme-toggle" aria-label="Cambiar tema claro/oscuro" title="Cambiar tema">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="4"></circle>
-          <path
-            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41">
-          </path>
-        </svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-      </button>
+      <div class="header-right">
+        <button id="theme-toggle" aria-label="Cambiar tema claro/oscuro" title="Cambiar tema">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path
+              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41">
+            </path>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+        <a class="logout-link" href="/api/logout">&#8646; SALIR</a>
+      </div>
     </header>
 
     <main class="app-grid">

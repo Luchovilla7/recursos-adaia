@@ -82,6 +82,20 @@
         .theme-toggle:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-color); }
         .theme-toggle:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0px var(--border-color); }
 
+        .topbar-actions { display: flex; align-items: center; gap: 0.7rem; }
+
+        .logout-btn {
+            display: flex; align-items: center; gap: 0.6rem;
+            background: var(--card-bg); color: var(--text-color);
+            border: 3px solid var(--border-color); border-radius: 999px;
+            padding: 0.4rem 0.9rem; cursor: pointer; text-decoration: none;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.8rem;
+            box-shadow: 3px 3px 0px var(--border-color);
+            transition: var(--transition);
+        }
+        .logout-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--border-color); }
+        .logout-btn:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0px var(--border-color); }
+
         /* Header */
         header.hero { padding: 3.5rem 0 2.5rem; text-align: center; }
         .eyebrow {
@@ -172,10 +186,16 @@
             <div class="brand">
                 <span class="brand-badge">VAULT</span>
             </div>
-            <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
-                <i class="fas fa-moon" id="theme-icon"></i>
-                <span id="theme-text">Oscuro</span>
-            </button>
+            <div class="topbar-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
+                    <i class="fas fa-moon" id="theme-icon"></i>
+                    <span id="theme-text">Oscuro</span>
+                </button>
+                <a class="logout-btn" href="/api/logout">
+                    <i class="fas fa-right-from-bracket"></i>
+                    <span>Cerrar sesión</span>
+                </a>
+            </div>
         </div>
     </div>
 
