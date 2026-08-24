@@ -5,6 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JSON Prompt Pro | Ailen Catriel</title>
+  <script>
+    (function () {
+      var saved = localStorage.getItem('vault-theme');
+      if (saved === 'dark' || saved === 'light') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -831,7 +839,7 @@
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
         </button>
-        <a class="logout-link" href="/api/logout">&#8646; SALIR</a>
+        <a class="logout-link" href="/api/logout">cerrar sesión</a>
       </div>
     </header>
 
@@ -1038,11 +1046,11 @@
 
       const root = document.documentElement;
       const themeToggle = document.getElementById('theme-toggle');
-      root.setAttribute('data-theme', 'light');
 
       themeToggle.addEventListener('click', () => {
         const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         root.setAttribute('data-theme', next);
+        localStorage.setItem('vault-theme', next);
       });
 
       const inputs = {

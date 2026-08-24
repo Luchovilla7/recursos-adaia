@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vault · Recursos</title>
+    <script>
+        (function () {
+            var saved = localStorage.getItem('vault-theme');
+            if (saved === 'dark' || saved === 'light') {
+                document.documentElement.setAttribute('data-theme', saved);
+            }
+        })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
@@ -249,7 +257,9 @@
         function toggleTheme() {
             const html = document.documentElement;
             const isDark = html.getAttribute('data-theme') === 'dark';
-            html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            const newTheme = isDark ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('vault-theme', newTheme);
             const icon = document.getElementById('theme-icon');
             const text = document.getElementById('theme-text');
             if (isDark) {
@@ -259,6 +269,11 @@
                 icon.className = 'fas fa-sun';
                 text.textContent = 'Claro';
             }
+        }
+
+        if (document.documentElement.getAttribute('data-theme') === 'dark') {
+            document.getElementById('theme-icon').className = 'fas fa-sun';
+            document.getElementById('theme-text').textContent = 'Claro';
         }
     </script>
 </body>
