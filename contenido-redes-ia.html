@@ -550,6 +550,11 @@
                                 <option value="1:1 cuadrado">1:1 cuadrado (Feed)</option>
                                 <option value="4:5 vertical">4:5 vertical (Feed Instagram)</option>
                                 <option value="16:9 horizontal">16:9 horizontal (YouTube)</option>
+                                <option value="3:4 vertical">3:4 vertical</option>
+                                <option value="4:3 horizontal">4:3 horizontal</option>
+                                <option value="2:3 vertical">2:3 vertical (Pinterest)</option>
+                                <option value="3:2 horizontal">3:2 horizontal (fotografía clásica)</option>
+                                <option value="21:9 panorámico">21:9 panorámico</option>
                             </select>
                         </div>
                         <div>
@@ -780,7 +785,7 @@
             const formato = document.getElementById('cfg-formato').selectedOptions[0].value;
             const camKey = val('cfg-camara');
             const camText = camKey.startsWith('selfie') ? "Tomada con cámara frontal de celular (no cámara profesional)." : "Tomada con cámara de celular en mano (no cámara profesional).";
-            return `Imagen ${formato}, formato ${tipo}. ${personaje} ${camText} Luz completamente natural — nada de iluminación de estudio ni luz de relleno artificial, ligeramente despareja como en un ambiente real. Se ve como un video/foto real autograbado, del tipo que alguien subiría a Instagram o TikTok ahora mismo. Leve distorsión propia del lente frontal. Piel natural — poros, textura sutil, sin retoque. Expresión relajada y casual, sin pose forzada. Vestimenta y entorno cotidianos. Sin look cinematográfico, sin color grading, sin efecto bokeh — solo calidad cruda y auténtica de cámara de celular. Hiperrealista, ultra detallada, fiel a la realidad.`;
+            return `Crear imagen, formato ${tipo}. ${personaje} ${camText} Luz completamente natural — nada de iluminación de estudio ni luz de relleno artificial, ligeramente despareja como en un ambiente real. Se ve como un video/foto real autograbado, del tipo que alguien subiría a Instagram o TikTok ahora mismo. Leve distorsión propia del lente frontal. Piel natural — poros, textura sutil, sin retoque. Expresión relajada y casual, sin pose forzada. Vestimenta y entorno cotidianos. Sin look cinematográfico, sin color grading, sin efecto bokeh — solo calidad cruda y auténtica de cámara de celular. Hiperrealista, ultra detallada, fiel a la realidad. --ar ${formato.split(' ')[0]}`;
         }
 
         function buildScriptPrompt() {
@@ -804,7 +809,7 @@
             const script = val('script-input').trim();
             const scriptBlock = script ? script : "[ Pegá tu guion arriba para completar el prompt ]";
 
-            return `Video UGC ${formato}, estilo ${tipo}, duración acorde al guion. ${personaje}
+            return `Video ${formato}, estilo ${tipo}, duración acorde al guion. ${personaje}
 
 CONSISTENCIA TOTAL: mismo rostro, mismo peinado, mismo outfit, mismo entorno y misma iluminación durante todo el video — cero cambios entre fotogramas, cero variación del personaje o el producto de principio a fin.
 
