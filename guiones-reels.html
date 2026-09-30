@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estructuras de Guion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="design-tokens-ailencatriel.css">
+    <link rel="stylesheet" href="topbar.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .step-label {
+            font-family: var(--font-sans);
+            text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Ancho del topbar propio de esta página (el resto vive en topbar.css) */
+        .topbar-inner {
+            max-width: 1000px;
+            padding: 1.1rem 2rem;
+        }
+
+        /* Header */
+        header.hero {
+            padding: 4rem 0 2.8rem;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            color: var(--color-text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 1.4rem;
+        }
+
+        .eyebrow .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--color-text);
+        }
+
+        header.hero h1 {
+            font-size: clamp(30px, 5.5vw, 44px);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+        }
+
+        header.hero h1 .hl {
+            font-style: italic;
+        }
+
+        header.hero p {
+            max-width: 620px;
+            margin: 0 auto;
+            color: var(--color-text-muted);
+            font-size: 1.02rem;
+            font-weight: 500;
+        }
+
+        .step-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-top: 2.2rem;
+        }
+
+        .step-nav a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--color-text);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border-soft);
+            border-radius: var(--radius-pill);
+            padding: 0.45rem 1.1rem;
+            transition: var(--transition);
+        }
+
+        .step-nav a:hover {
+            border-color: var(--color-text);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .step-nav .num {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--color-text);
+            color: var(--color-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.68rem;
+            font-weight: 700;
+        }
+
+        main {
+            padding: 1rem 0 5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Section card */
+        section.card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border-soft);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-soft);
+            padding: 2rem;
+            transition: var(--transition);
+        }
+
+        .card-head {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title-row {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .step-badge {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: var(--color-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-sans);
+            font-weight: 700;
+            font-size: 0.78rem;
+            color: var(--color-bg);
+        }
+
+        section.card h2 {
+            font-size: 1.5rem;
+        }
+
+        .card-sub {
+            color: var(--color-text-muted);
+            font-size: 0.92rem;
+            font-weight: 500;
+            margin-left: 2.9rem;
+        }
+
+        .copy-btn {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            color: var(--color-text);
+            border: 1px solid var(--color-text);
+            border-radius: var(--radius-pill);
+            padding: 0.6rem 1.2rem;
+            font-family: var(--font-sans);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .copy-btn:hover {
+            background: var(--color-text);
+            color: var(--color-bg);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .copy-btn.copied {
+            background: var(--color-text);
+            color: var(--color-bg);
+        }
+
+        .field-block {
+            margin-left: 2.9rem;
+        }
+
+        label.field-label {
+            font-family: var(--font-sans);
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--color-text-muted);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .field-input,
+        .field-select,
+        .field-textarea {
+            width: 100%;
+            background: var(--color-bg-alt);
+            color: var(--color-text);
+            border: 1px solid var(--color-border-soft);
+            border-radius: 12px;
+            padding: 0.7rem 0.9rem;
+            font-family: var(--font-sans);
+            font-size: 0.88rem;
+            font-weight: 500;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .field-input:focus,
+        .field-select:focus,
+        .field-textarea:focus {
+            border-color: var(--color-text);
+            background: var(--color-surface);
+        }
+
+        select.field-select {
+            cursor: pointer;
+        }
+
+        textarea.field-textarea {
+            resize: vertical;
+            min-height: 70px;
+            line-height: 1.5;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+
+        .editable-zone {
+            background: var(--color-surface-alt);
+            border: 1px dashed var(--color-border);
+            border-radius: 12px;
+            padding: 0.9rem 1.1rem;
+            color: var(--color-text);
+            font-family: var(--font-sans);
+            font-size: 0.88rem;
+            font-weight: 500;
+            line-height: 1.7;
+            width: 100%;
+            resize: vertical;
+            outline: none;
+            min-height: 90px;
+            transition: var(--transition);
+        }
+
+        .editable-zone:focus {
+            border-color: var(--color-text);
+        }
+
+        .editable-zone::placeholder {
+            color: var(--color-text-muted);
+            opacity: 0.8;
+        }
+
+        .output-box {
+            background: var(--color-surface-alt);
+            border: 1px solid var(--color-border-soft);
+            border-radius: 12px;
+            padding: 1.1rem 1.3rem;
+            font-family: var(--font-sans);
+            font-size: 0.87rem;
+            color: var(--color-text);
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-break: break-word;
+            min-height: 80px;
+            font-weight: 400;
+        }
+
+        .pulse-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--color-text);
+            animation: pulse 2s infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(0.75);
+            }
+        }
+
+        .pulse-label {
+            font-family: var(--font-sans);
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--color-text-muted);
+        }
+
+        .micro-note {
+            color: var(--color-text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin: 0.8rem 0 1rem;
+        }
+
+        .micro-note code {
+            background: var(--color-surface-alt);
+            color: var(--color-text);
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            font-family: var(--font-sans);
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .micro-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .micro-chip {
+            background: transparent;
+            border: 1px solid var(--color-border-soft);
+            border-radius: var(--radius-pill);
+            padding: 0.4rem 0.9rem;
+            color: var(--color-text);
+            font-family: var(--font-sans);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition);
+        }
+
+        .micro-chip:hover {
+            border-color: var(--color-text);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .micro-chip.copied {
+            background: var(--color-text);
+            color: var(--color-bg);
+            border-color: var(--color-text);
+        }
+
+        footer.page-footer {
+            border-top: 1px solid var(--color-border-soft);
+            padding: 2rem 0;
+            text-align: center;
+            color: var(--color-text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        #toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            transform: translateY(120%);
+            opacity: 0;
+            background: var(--color-text);
+            color: var(--color-bg);
+            font-weight: 600;
+            padding: 0.8rem 1.4rem;
+            border-radius: var(--radius-pill);
+            box-shadow: var(--shadow-hover);
+            transition: all 0.3s ease;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: var(--font-sans);
+        }
+
+        #toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @media (max-width: 700px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .card-sub,
+            .field-block {
+                margin-left: 0;
+            }
+
+            section.card {
+                padding: 1.4rem;
+            }
+        }
+
+        .template-bank {
+            margin-left: 2.9rem;
+        }
+
+        .micro-chip.active {
+            background: var(--color-text);
+            color: var(--color-bg);
+            border-color: var(--color-text);
+        }
+
+        .template-desc {
+            margin-top: 1rem;
+            color: var(--color-text-muted);
+            font-size: 0.88rem;
+            font-weight: 500;
+        }
+
+        .btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        @media (max-width: 700px) {
+            .template-bank {
+                margin-left: 0;
+            }
+        }
+    </style>
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="theme-color" content="#191919">
+    <link rel="icon" type="image/png" href="/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () { }); });
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">
+                <a class="back-link" href="recursos.html"><i class="fas fa-arrow-left"></i> Atrás</a>
+                <span class="brand-badge">ESTRUCTURAS DE GUION</span>
+            </div>
+            <div class="topbar-actions">
+                <a class="logout-btn" href="/api/logout">
+                    <i class="fas fa-right-from-bracket"></i>
+                    <span>Cerrar sesión</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header class="hero">
+            <div class="eyebrow"><span class="dot"></span> Reels y shorts</div>
+            <h1>Estructuras de <span class="hl">guion</span></h1>
+            <p>Elegí una plantilla, completá los campos y obtené tu guion con gancho, desarrollo y cierre, listo para
+                copiar.</p>
+
+            <nav class="step-nav">
+                <a href="#paso-plantilla"><span class="num">01</span> Plantilla</a>
+                <a href="#paso-campos"><span class="num">02</span> Campos</a>
+                <a href="#paso-guion"><span class="num">03</span> Guion</a>
+            </nav>
+        </header>
+
+        <main>
+
+            <section class="card" id="paso-plantilla">
+                <div class="card-title-row">
+                    <div class="step-badge">01</div>
+                    <h2>Elegí la plantilla</h2>
+                </div>
+                <p class="card-sub">Cada estructura sirve para un tipo de contenido distinto.</p>
+                <div class="template-bank" style="margin-top:1.5rem;">
+                    <div class="micro-bank" id="template-bank"></div>
+                    <p class="template-desc" id="template-desc"></p>
+                </div>
+            </section>
+
+            <section class="card" id="paso-campos">
+                <div class="card-title-row">
+                    <div class="step-badge">02</div>
+                    <h2>Completá los campos</h2>
+                </div>
+                <p class="card-sub">Escribí frases cortas: el guion se arma solo mientras completás.</p>
+                <div class="field-block" style="margin-top:1.5rem;">
+                    <div class="grid-2" id="fields"></div>
+                    <div style="margin-top:1.2rem; max-width: 280px;">
+                        <label class="field-label" for="duration">Duración del video</label>
+                        <select id="duration" class="field-select">
+                            <option value="15">15 segundos</option>
+                            <option value="30" selected>30 segundos</option>
+                            <option value="45">45 segundos</option>
+                            <option value="60">60 segundos</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card" id="paso-guion">
+                <div class="card-head">
+                    <div>
+                        <div class="card-title-row">
+                            <div class="step-badge">03</div>
+                            <h2>Tu guion</h2>
+                        </div>
+                        <p class="card-sub">Los campos vacíos aparecen entre corchetes.</p>
+                    </div>
+                    <div class="btn-row">
+                        <button class="copy-btn" id="clear-btn" type="button"><i class="fas fa-eraser"></i> Limpiar</button>
+                        <button class="copy-btn" id="copy-btn" type="button"><i class="fas fa-copy"></i> Copiar guion</button>
+                    </div>
+                </div>
+                <div class="field-block">
+                    <div class="output-box" id="output"></div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="page-footer">
+        <p>ADAIA · Bóveda de recursos &amp; Apps</p>
+    </footer>
+
+    <div id="toast"><i class="fas fa-check"></i> <span class="toast-text">¡Copiado al portapapeles!</span></div>
+
+    <script src="shared.js"></script>
+    <script>
+        // Campos reutilizables entre plantillas: [etiqueta, ejemplo]
+        const F = {
+            tema: ['Tema', 'ej. crear contenido con IA'],
+            problema: ['Problema de tu audiencia', 'ej. no saber qué publicar'],
+            tip1: ['Tip 1', 'ej. definí un solo objetivo por video'],
+            tip2: ['Tip 2', 'ej. usá un gancho en los primeros 3 segundos'],
+            tip3: ['Tip 3', 'ej. cerrá con una pregunta'],
+            situacion: ['Situación inicial', 'ej. probé una herramienta nueva'],
+            giro: ['Punto de giro', 'ej. cambié mi método'],
+            resultado: ['Resultado', 'ej. dupliqué mis vistas'],
+            aprendizaje: ['Aprendizaje', 'ej. la constancia gana a la perfección'],
+            mito: ['Mito', 'ej. hay que publicar todos los días'],
+            realidad: ['Realidad', 'ej. importa más la calidad que la cantidad'],
+            prueba: ['Prueba o ejemplo', 'ej. mi último video tuvo 10 mil vistas'],
+            antes: ['Antes', 'ej. publicaba sin estrategia'],
+            despues: ['Después', 'ej. tengo un calendario de contenido'],
+            tiempo: ['Tiempo', 'ej. 30 días'],
+            cambio: ['Qué cambió', 'ej. planifiqué todo en una sola sesión'],
+            logro: ['Qué querés lograr', 'ej. crear un reel con IA'],
+            paso1: ['Paso 1', 'ej. definí tu idea'],
+            paso2: ['Paso 2', 'ej. generá las imágenes'],
+            paso3: ['Paso 3', 'ej. editá y publicá'],
+            solucion: ['Tu solución o producto', 'ej. mi plantilla de guiones'],
+            beneficio: ['Beneficio principal', 'ej. ahorrar horas cada semana'],
+            oferta: ['Qué incluye', 'ej. 10 plantillas y una guía'],
+            cta: ['Llamado a la acción', 'ej. seguime para más ideas']
+        };
+
+        // Cada sección usa {campo} como hueco; las líneas de una sección se separan con \n.
+        const TEMPLATES = [
+            {
+                name: 'Tips rápidos',
+                desc: 'Formato educativo: 3 consejos concretos sobre un tema.',
+                sections: [
+                    ['Gancho', '3 cosas que nadie te cuenta sobre {tema}.'],
+                    ['Desarrollo', 'Si te pasa que {problema}, esto es para vos.\nUno: {tip1}.\nDos: {tip2}.\nTres: {tip3}.'],
+                    ['Cierre', '{cta}']
+                ]
+            },
+            {
+                name: 'Storytelling',
+                desc: 'Contá una historia breve con un giro y una enseñanza.',
+                sections: [
+                    ['Gancho', 'Hace poco {situacion}… y no me esperaba lo que vino después.'],
+                    ['Desarrollo', 'El problema era {problema}.\nHasta que {giro}.\nEl resultado: {resultado}.'],
+                    ['Cierre', 'Lo que aprendí: {aprendizaje}.\n{cta}']
+                ]
+            },
+            {
+                name: 'Mito vs realidad',
+                desc: 'Desmontá una creencia común y respaldala con una prueba.',
+                sections: [
+                    ['Gancho', 'Te mintieron: {mito}.'],
+                    ['Desarrollo', 'La realidad es que {realidad}.\nLa prueba: {prueba}.'],
+                    ['Cierre', '{cta}']
+                ]
+            },
+            {
+                name: 'Antes y después',
+                desc: 'Mostrá una transformación y qué la hizo posible.',
+                sections: [
+                    ['Gancho', 'Pasé de {antes} a {despues} en {tiempo}.'],
+                    ['Desarrollo', 'Esto fue lo que cambió: {cambio}.'],
+                    ['Cierre', '{cta}']
+                ]
+            },
+            {
+                name: 'Tutorial paso a paso',
+                desc: 'Enseñá a lograr algo en tres pasos.',
+                sections: [
+                    ['Gancho', 'Cómo {logro} en 3 pasos.'],
+                    ['Desarrollo', 'Paso 1: {paso1}.\nPaso 2: {paso2}.\nPaso 3: {paso3}.'],
+                    ['Cierre', 'Con esto ya podés {logro}.\n{cta}']
+                ]
+            },
+            {
+                name: 'Oferta o venta',
+                desc: 'Presentá un producto o servicio desde el problema que resuelve.',
+                sections: [
+                    ['Gancho', '¿Seguís con {problema}?'],
+                    ['Desarrollo', 'Te presento {solucion}.\nCon esto conseguís {beneficio}.\nIncluye: {oferta}.'],
+                    ['Cierre', '{cta}']
+                ]
+            }
+        ];
+
+        const GANCHO_SEG = 3;
+        let current = 0;
+        const values = {}; // conserva lo escrito al cambiar de plantilla
+
+        const $ = (id) => document.getElementById(id);
+
+        function fieldsOf(tpl) {
+            const seen = [];
+            tpl.sections.forEach(([, text]) => {
+                (text.match(/\{(\w+)\}/g) || []).forEach((m) => {
+                    const k = m.slice(1, -1);
+                    if (!seen.includes(k)) seen.push(k);
+                });
+            });
+            return seen;
+        }
+
+        // Gancho fijo de 3 s; el resto se reparte 70 % desarrollo / 30 % cierre
+        function ranges(total) {
+            const dev = Math.round((total - GANCHO_SEG) * 0.7);
+            return [[0, GANCHO_SEG], [GANCHO_SEG, GANCHO_SEG + dev], [GANCHO_SEG + dev, total]];
+        }
+
+        function render() {
+            const tpl = TEMPLATES[current];
+            const r = ranges(parseInt($('duration').value, 10));
+            $('output').textContent = tpl.sections.map(([title, body], i) => {
+                const filled = body.replace(/\{(\w+)\}/g, (_, k) => {
+                    const v = (values[k] || '').trim();
+                    return v || '[' + F[k][0].toLowerCase() + ']';
+                });
+                return title.toUpperCase() + ' (' + r[i][0] + '–' + r[i][1] + ' s)\n' + filled;
+            }).join('\n\n');
+        }
+
+        function renderFields() {
+            const wrap = $('fields');
+            wrap.innerHTML = '';
+            fieldsOf(TEMPLATES[current]).forEach((k) => {
+                const div = document.createElement('div');
+                const label = document.createElement('label');
+                label.className = 'field-label';
+                label.htmlFor = 'f-' + k;
+                label.textContent = F[k][0];
+                const input = document.createElement('input');
+                input.className = 'field-input';
+                input.id = 'f-' + k;
+                input.type = 'text';
+                input.placeholder = F[k][1];
+                input.value = values[k] || '';
+                input.addEventListener('input', () => { values[k] = input.value; render(); });
+                div.append(label, input);
+                wrap.appendChild(div);
+            });
+        }
+
+        function selectTemplate(i) {
+            current = i;
+            document.querySelectorAll('#template-bank .micro-chip').forEach((b, idx) => {
+                b.classList.toggle('active', idx === i);
+            });
+            $('template-desc').textContent = TEMPLATES[i].desc;
+            renderFields();
+            render();
+        }
+
+        TEMPLATES.forEach((t, i) => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'micro-chip';
+            b.textContent = t.name;
+            b.addEventListener('click', () => selectTemplate(i));
+            $('template-bank').appendChild(b);
+        });
+
+        $('duration').addEventListener('change', render);
+
+        $('copy-btn').addEventListener('click', async () => {
+            const ok = await copyToClipboard($('output').textContent);
+            showToast(ok ? '¡Guion copiado al portapapeles!' : 'No se pudo copiar');
+        });
+
+        $('clear-btn').addEventListener('click', () => {
+            Object.keys(values).forEach((k) => delete values[k]);
+            renderFields();
+            render();
+        });
+
+        selectTemplate(0);
+    </script>
+</body>
+
+</html>

@@ -2,7 +2,7 @@ import { verifySession } from './lib/session.js';
 
 // Protege las páginas estáticas del vault: sin cookie de sesión válida, redirige al login.
 export const config = {
-  matcher: ['/contenido-redes-ia.html', '/json-prompt-pro.html', '/recursos.html', '/skills-adaia.html', '/skills/:path*'],
+  matcher: ['/contenido-redes-ia.html', '/json-prompt-pro.html', '/recursos.html', '/skills-adaia.html', '/guiones-reels.html', '/skills/:path*'],
 };
 
 function getCookie(request, name) {
