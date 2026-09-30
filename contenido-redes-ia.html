@@ -265,6 +265,12 @@
             background: var(--color-surface);
         }
 
+        .field-input::placeholder,
+        .field-textarea::placeholder {
+            color: var(--color-text-muted);
+            opacity: 0.7;
+        }
+
         select.field-select {
             cursor: pointer;
         }
@@ -518,7 +524,7 @@
                         <div>
                             <label class="field-label">Personaje / producto / escena (descripción fija)</label>
                             <textarea id="cfg-personaje" class="field-textarea" rows="3" oninput="updateAll()"
-                                placeholder="Ej: mujer de unos 27 años, cabello oscuro recogido en un rodete, buzo gris, sentada en el auto, sosteniendo una lata de agua tónica negra y dorada">Mujer de unos 27 años, cabello castaño oscuro recogido en un rodete bajo, buzo gris oversize, sentada en el asiento del conductor de un auto, sosteniendo una lata negra y dorada de agua tónica premium.</textarea>
+                                placeholder="Ej: Mujer de unos 27 años, cabello castaño oscuro recogido en un rodete bajo, buzo gris oversize, sentada en el asiento del conductor de un auto, gesticulando con una mano y con la boca abierta."></textarea>
                         </div>
                     </div>
 
@@ -621,8 +627,7 @@
                         <div>
                             <label class="field-label">Tema / mensaje clave</label>
                             <input id="cfg-tema" class="field-input" oninput="updateAll()"
-                                placeholder="Ej: la marca X, su beneficio principal..."
-                                value="Verona, agua tónica premium: sabor más dulce y agradable, burbujas más intensas">
+                                placeholder="Inserta el tema principal del guión">
                         </div>
                         <div>
                             <label class="field-label">Duración (segundos)</label>
