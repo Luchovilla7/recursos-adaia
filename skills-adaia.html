@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bóveda de recursos &amp; Apps</title>
+    <title>Skills de ADAIA</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -35,11 +35,6 @@
             font-weight: 500;
         }
 
-        .step-label {
-            font-family: var(--font-sans);
-            text-transform: uppercase;
-        }
-
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -52,29 +47,9 @@
             padding: 1.1rem 2rem;
         }
 
-        /* Header */
         header.hero {
             padding: 4rem 0 2.8rem;
             text-align: center;
-        }
-
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            color: var(--color-text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            margin-bottom: 1.4rem;
-        }
-
-        .eyebrow .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--color-text);
         }
 
         header.hero h1 {
@@ -82,12 +57,6 @@
             margin-bottom: 1rem;
             line-height: 1.15;
             letter-spacing: -0.01em;
-        }
-
-        header.hero h1 .hl {
-            font-style: normal;
-            font-family: var(--font-serif);
-            font-style: italic;
         }
 
         header.hero p {
@@ -175,25 +144,19 @@
             transition: width 350ms var(--ease-premium);
         }
 
-        a.resource-card:hover {
+        .resource-card:hover {
             background: var(--color-surface);
             border-color: var(--color-text);
             transform: translateY(-4px);
             box-shadow: var(--shadow-hover);
         }
 
-        a.resource-card:hover::after {
+        .resource-card:hover::after {
             width: 100%;
         }
 
-        a.resource-card:active {
+        .resource-card:active {
             transform: translateY(-1px);
-        }
-
-        .resource-card.locked {
-            opacity: 0.55;
-            cursor: not-allowed;
-            border-style: dashed;
         }
 
         .resource-icon {
@@ -210,11 +173,6 @@
             flex-shrink: 0;
         }
 
-        .resource-card.locked .resource-icon {
-            border-color: var(--color-border-soft);
-            color: var(--color-text-muted);
-        }
-
         .resource-card h3 {
             font-size: 1.2rem;
             line-height: 1.3;
@@ -227,23 +185,29 @@
             flex-grow: 1;
         }
 
-        .resource-cta {
+        .download-btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            align-self: flex-start;
+            gap: 0.6rem;
+            margin-top: 0.3rem;
+            background: var(--color-text);
+            color: var(--color-bg);
+            border: 1px solid var(--color-text);
+            border-radius: var(--radius-pill);
+            padding: 0.5rem 1.1rem;
+            text-decoration: none;
             font-family: var(--font-sans);
             font-size: 0.8rem;
-            letter-spacing: 0.04em;
-            font-weight: 700;
-            margin-top: 0.3rem;
+            font-weight: 600;
+            transition: var(--transition);
         }
 
-        .resource-cta i {
-            transition: transform 0.2s ease;
-        }
-
-        a.resource-card:hover .resource-cta i {
-            transform: translateX(4px);
+        .download-btn:hover {
+            background: transparent;
+            color: var(--color-text);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
         }
 
         .resource-badge {
@@ -258,11 +222,6 @@
             text-transform: uppercase;
             color: var(--color-text-muted);
             font-weight: 700;
-        }
-
-        .resource-badge.live {
-            background: var(--color-text);
-            color: var(--color-bg);
         }
 
         footer.page-footer {
@@ -286,10 +245,9 @@
 
     <div class="topbar">
         <div class="topbar-inner">
-            <div class="brand">
-                <span class="brand-badge">Bóveda de recursos &amp; Apps</span>
-            </div>
+            <a class="back-link" href="recursos.html"><i class="fas fa-arrow-left"></i> Volver</a>
             <div class="topbar-actions">
+                <span class="brand-badge">Skills de ADAIA</span>
                 <a class="logout-btn" href="/api/logout">
                     <i class="fas fa-right-from-bracket"></i>
                     <span>Cerrar sesión</span>
@@ -300,50 +258,37 @@
 
     <div class="container">
         <header class="hero">
-            <div class="eyebrow"><span class="dot"></span> Bóveda de recursos &amp; Apps</div>
-            <h1>Tus <span class="hl">recursos</span> en un solo lugar</h1>
-            <p>Accedé a las herramientas y guías disponibles. Elegí un recurso para entrar.</p>
+            <h1>Skills de <span class="hl">ADAIA</span></h1>
+            <p>Descargá las skills y cargalas en tu Claude para usarlas en tus proyectos.</p>
         </header>
 
         <main>
             <div class="section-label">
                 <div class="pulse-dot"></div>
-                <span class="txt">Recursos disponibles</span>
+                <span class="txt">Skills disponibles</span>
             </div>
 
             <div class="resource-grid">
 
-                <a class="resource-card" href="contenido-redes-ia.html">
-                    <div class="resource-icon"><i class="fas fa-clapperboard"></i></div>
-                    <h3>Contenido para Redes con IA Generativa</h3>
-                    <p>Armá en segundos los prompts de imagen, guion y video 100% consistentes para tus reels y shorts.
-                    </p>
-                    <span class="resource-badge live">Disponible</span>
-                    <span class="resource-cta">Ingresar <i class="fas fa-arrow-right"></i></span>
-                </a>
-
-                <a class="resource-card" href="json-prompt-pro.html">
-                    <div class="resource-icon"><i class="fas fa-code"></i></div>
-                    <h3>JSON Prompt Pro</h3>
-                    <p>Estructurá tus prompts de IA con precisión quirúrgica, listos para imagen y video.</p>
-                    <span class="resource-badge live">Disponible</span>
-                    <span class="resource-cta">Ingresar <i class="fas fa-arrow-right"></i></span>
-                </a>
-
-                <a class="resource-card" href="skills-adaia.html">
+                <div class="resource-card">
                     <div class="resource-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
-                    <h3>Skills de ADAIA</h3>
-                    <p>Las skills de ADAIA listas para que las uses en tus proyectos con IA.</p>
-                    <span class="resource-badge live">Disponible</span>
-                    <span class="resource-cta">Ingresar <i class="fas fa-arrow-right"></i></span>
-                </a>
+                    <h3>Prompt Optimizer</h3>
+                    <p>Optimizá prompts de fotografía hiperrealista con IA y mantené la consistencia de identidad de tu avatar.</p>
+                    <a class="download-btn" href="skills/prompt-optimizer.skill" download><i class="fas fa-download"></i> Descargar</a>
+                </div>
 
-                <div class="resource-card locked" aria-disabled="true">
-                    <div class="resource-icon"><i class="fas fa-hourglass-half"></i></div>
-                    <h3>Más recursos en camino</h3>
-                    <p>Próximamente se agregarán más recursos a la bóveda. Volvé a pasar por aquí para descubrir las
-                        nuevas herramientas.</p>
-                    <span class="resource-badge">Próximamente</span>
+                <div class="resource-card">
+                    <div class="resource-icon"><i class="fas fa-image"></i></div>
+                    <h3>Generador de Prompts Visuales</h3>
+                    <p>Estructurá prompts profesionales para IA de imágenes con atributos visuales, iluminación, lentes y parámetros técnicos.</p>
+                    <a class="download-btn" href="skills/generador-prompts-visuales.skill" download><i class="fas fa-download"></i> Descargar</a>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon"><i class="fas fa-code"></i></div>
+                    <h3>JSON Prompt Arquitech</h3>
+                    <p>Convertí descripciones simples en prompts JSON profesionales para modelos de generación de imágenes.</p>
+                    <a class="download-btn" href="skills/json-prompt-arquitech.skill" download><i class="fas fa-download"></i> Descargar</a>
                 </div>
 
             </div>
