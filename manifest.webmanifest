@@ -1,0 +1,16 @@
+{
+  "name": "Bóveda de recursos & Apps",
+  "short_name": "Bóveda ADAIA",
+  "start_url": "/recursos.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F8F5ED",
+  "theme_color": "#191919",
+  "lang": "es",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

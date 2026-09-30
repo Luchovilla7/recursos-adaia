@@ -280,6 +280,15 @@
             }
         }
     </style>
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="theme-color" content="#191919">
+    <link rel="icon" type="image/png" href="/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () { }); });
+        }
+    </script>
 </head>
 
 <body>
@@ -332,7 +341,7 @@
 
                 <a class="resource-card" href="skills-adaia.html">
                     <div class="resource-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
-                    <h3>Skills de ADAIA</h3>
+                    <h3>Skills</h3>
                     <p>Las skills de ADAIA listas para que las uses en tus proyectos con IA.</p>
                     <span class="resource-badge live">Disponible</span>
                     <span class="resource-cta">Ingresar <i class="fas fa-arrow-right"></i></span>
